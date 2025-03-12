@@ -118,6 +118,13 @@ VULNERABLE=true   # ou false
 docker-compose up --build
 ```
 
+ou
+
+```bash
+docker-compose down -v && docker-compose build --no-cache && docker-compose up
+```
+
+
 Accès à l’application : [http://localhost:3000](http://localhost:3000)
 
 ---
