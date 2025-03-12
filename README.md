@@ -41,28 +41,13 @@ Le projet implémente 5 vulnérabilités majeures identifiées dans le Top 10 OW
 
 ### 1️⃣ SQL Injection (OWASP A01 - Injection)
 
-- **Description** : L'utilisateur peut injecter du SQL dans les champs de recherche ou de connexion.
-- **Correction** : Utilisation de requêtes préparées (paramétrées) et d'un ORM dans le mode sécurisé.
-
 ### 2️⃣ Authentification cassée (OWASP A02 - Broken Authentication)
-
-- **Description** : Le système d’authentification n’expire jamais, les tokens sont réutilisables à volonté, et aucune protection contre le bruteforce n’est en place.
-- **Correction** : JWT avec expiration, protection contre le bruteforce, et limitation de tentatives (throttling).
 
 ### 3️⃣ Exposition de données sensibles (OWASP A03 - Sensitive Data Exposure)
 
-- **Description** : Les mots de passe sont stockés en clair, les données de carte bancaire sont accessibles en clair dans le localStorage du navigateur.
-- **Correction** : Hashage des mots de passe avec bcrypt, suppression des données sensibles côté client, chiffrement des communications.
-
 ### 4️⃣ Mauvaise configuration de sécurité (OWASP A05 - Security Misconfiguration)
 
-- **Description** : Les routes administratives sont accessibles sans authentification ni vérification de rôle.
-- **Correction** : Mise en place d’un middleware de vérification de rôle, restriction d’accès aux routes sensibles.
-
-### 5️⃣ Cross-Site Scripting (OWASP A07 - Cross-Site Scripting - XSS)
-
-- **Description** : Un utilisateur peut insérer du script dans les commentaires produits.
-- **Correction** : Échappement des entrées utilisateur et sanitation HTML.
+### 5️⃣ Cross-Site Scripting (OWASP A07 - XSS)
 
 ---
 
@@ -71,30 +56,39 @@ Le projet implémente 5 vulnérabilités majeures identifiées dans le Top 10 OW
 ```txt
 /SportHack-Store
 ├── backend/
-│   ├── controllers/       → Logique métier (produits, auth, utilisateurs)
-│   ├── routes/            → Définition des endpoints API
-│   ├── models/            → Schémas de base de données (ORM ou requêtes)
-│   ├── middleware/        → Authentification, gestion des rôles, sécurité
-│   └── .env               → Fichier de configuration du mode (vulnérable/sécurisé)
+│   ├── controllers/         → Logique métier (produits, auth, utilisateurs)
+│   ├── routes/              → Définition des endpoints API
+│   ├── models/              → Connexion BDD (db.js) et futurs modèles ORM
+│   ├── middleware/          → Authentification, gestion des rôles, sécurité, détection du mode actif
+│   ├── .env.example         → Variables d’environnement modèle
+│   ├── Dockerfile           → Conteneurisation backend
+│   └── server.js            → Point d’entrée API
+│   └── package.json         → Dépendances backend
 ├── frontend/
+│   ├── public/              → Fichiers statiques
 │   ├── src/
-│   │   ├── components/    → Composants React réutilisables (cartes produits, formulaires, etc.)
-│   │   ├── pages/         → Pages principales (Accueil, Panier, Admin, etc.)
-│   │   └── services/      → API Service (axios/fetch)
+│   │   ├── components/      → Composants réutilisables React (LoginForm, Navbar, etc.)
+│   │   ├── pages/           → Pages principales (Accueil, Admin, Panier, etc.)
+│   │   └── services/        → Appels API (axios)
+│   ├── Dockerfile           → Conteneurisation frontend
+│   └── package.json         → Dépendances frontend
 ├── database/
-│   └── dump.sql           → Script SQL pour peupler la base avec des données d'exemple
-├── docker-compose.yml     → Configuration multi-container (frontend, backend, db)
+│   └── dump.sql             → Script SQL de création et insertion de données
+├── docker-compose.yml       → Orchestration des services (backend, frontend, mysql)
 ├── README.md
-└── install-demo-video.mp4 → Vidéo de démonstration et présentation des failles
+└── install-demo-video.mp4   → Vidéo pédagogique du projet
 ```
 
 ---
 
-## 🚀 Lancement du projet avec Docker
+## 🚀 Initialisation du projet avec Docker
 
-### Pré-requis : Docker & Docker Compose installés
+### 📋 Pré-requis
 
-### Étapes
+- Docker installé : <https://www.docker.com/>
+- Docker Compose installé
+
+### ⚙️ Étapes d’installation
 
 ```bash
 git clone https://github.com/<votre-pseudo>/sporthack-store.git
@@ -102,56 +96,63 @@ cd sporthack-store
 cp backend/.env.example backend/.env
 ```
 
-⚙️ Modifiez le fichier `.env` pour choisir le mode :
+Modifiez le fichier `.env` si besoin :
 
-```txt
+```env
 DB_HOST=db
 DB_USER=root
 DB_PASSWORD=admin
 DB_NAME=sportstore
+JWT_SECRET=secretkey
 VULNERABLE=true   # ou false
 ```
 
-### Lancez le projet
+### ▶️ Lancement du projet
 
 ```bash
 docker-compose up --build
 ```
 
-ou
+✅ Ou pour tout reconstruire sans cache :
 
 ```bash
 docker-compose down -v && docker-compose build --no-cache && docker-compose up
 ```
 
-
 Accès à l’application : [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🧪 Démonstration des vulnérabilités
+## ✅ Tâches restantes (TODO)
 
-Une vidéo incluse (`install-demo-video.mp4`) présente :
+### 🔧 Fonctions techniques à ajouter
 
-- L’installation pas à pas du projet
-- L’exploitation des 5 failles (SQLi, XSS, Auth, etc.)
-- Le comportement en mode sécurisé (comparaison)
-- Les explications pédagogiques pour chaque correctif apporté
+- [ ] Création de la page d'administration avec listing des produits/utilisateurs
+- [ ] Ajout de rôles utilisateurs (admin, user) et restriction des routes côté backend
+- [ ] Affichage dynamique des requêtes SQL dans le frontend (debug pédagogique)
+- [ ] Page de journalisation des connexions utilisateurs (logins, IP, rôle)
 
-Vous pouvez également vous référer aux walkthroughs :
+### 🔒 Sécurité & OWASP
 
-- <https://github.com/juice-shop/juice-shop/blob/master/SOLUTIONS.md>
-- <https://github.com/bsqrl/juice-shop-walkthrough>
+- [ ] Intégration d’une 6e faille OWASP : IDOR (accès à une commande d’un autre user)
+- [ ] Option d’ajout d’une fausse faille CSRF sur une suppression produit en POST
 
----
+### 📐 UI/UX
 
-## 📄 Dump SQL
+- [ ] Ajout d’un badge dynamique “Mode: Sécurisé / Vulnérable” dans la navbar
+- [ ] Interface plus visuelle des commentaires (pour démonstration XSS)
 
-Le fichier `dump.sql` contient :
+### 🧪 Tests & Documentation
 
-- Création des tables `users`, `products`, `orders`, `comments`
-- Données de démonstration
-- Différenciation des données si nécessaire entre mode vulnérable/sécurisé
+- [ ] Création de tests unitaires backend (ex: loginController)
+- [ ] Ajout d’un fichier Postman ou Swagger pour tester l’API REST
+- [ ] Intégration continue simple (CI) via GitHub Actions
+
+### 🌍 Accessibilité & Optimisation
+
+- [ ] Traduction anglaise du frontend (i18n)
+- [ ] Amélioration du responsive/mobile design
+- [ ] Nettoyage du code et séparation stricte logique/présentation
 
 ---
 
