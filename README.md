@@ -91,7 +91,7 @@ Le projet implémente 5 vulnérabilités majeures identifiées dans le Top 10 OW
 ### ⚙️ Étapes d’installation
 
 ```bash
-git clone https://github.com/<votre-pseudo>/sporthack-store.git
+git clone https://github.com/JulieMontoux/SportHack-Store.git
 cd sporthack-store
 cp backend/.env.example backend/.env
 ```
