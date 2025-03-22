@@ -1,13 +1,13 @@
 -- Suppression si existantes
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS products; 
-DROP TABLE IF EXISTS orders; 
-DROP TABLE IF EXISTS comments; 
 DROP TABLE IF EXISTS scores;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products; 
+DROP TABLE IF EXISTS users;
 
 -- Table users
 CREATE TABLE users (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   role VARCHAR(50) DEFAULT 'user'
@@ -21,7 +21,7 @@ INSERT INTO users (email, password, role) VALUES
 
 -- Table products
 CREATE TABLE products (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(100),
   description TEXT,
   price DECIMAL(6,2),
@@ -38,7 +38,7 @@ INSERT INTO products (name, description, price, image) VALUES
 
 -- Table orders
 CREATE TABLE orders (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   date DATETIME,
   total DECIMAL(8,2),
@@ -54,7 +54,7 @@ INSERT INTO orders (user_id, date, total, status) VALUES
 
 -- Table comments
 CREATE TABLE comments (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   user VARCHAR(255),
   content TEXT,
   product_id INT,
@@ -67,8 +67,9 @@ INSERT INTO comments (user, content, product_id) VALUES
 ('admin', '<script>alert("XSS vulnérable !")</script>', 2),
 ('user2', 'Très bon rapport qualité/prix', 3);
 
+-- Table scores
 CREATE TABLE scores (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   label VARCHAR(255),
   date DATETIME DEFAULT NOW(),

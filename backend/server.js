@@ -20,12 +20,14 @@ const orderRoutes = require("./routes/orders");
 const commentRoutes = require("./routes/comments");
 const scoreRoutes = require("./routes/score");
 const authRoutes = require("./routes/authRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/scores", scoreRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/login", adminRoutes);
 
 app.get("/", (req, res) => {
   res.send("🎯 API SportH@ck Store opérationnelle !");

@@ -46,3 +46,5 @@ const ScorePage = () => {
     </Container>
   );
 };
+
+export default ScorePage;

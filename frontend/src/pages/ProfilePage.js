@@ -1,33 +1,21 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Container, Card, Button } from "react-bootstrap";
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const username = localStorage.getItem("username"); // ou autre champ stocké
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  if (!token) {
-    navigate("/login");
-    return null;
-  }
+  if (!user) return <p className="mt-4 text-center">Non connecté</p>;
 
   return (
-    <div className="container mt-5">
-      <h2 className="mb-4">👤 Mon Profil</h2>
-      <div className="card p-4 shadow-sm">
-        <p><strong>Nom d’utilisateur :</strong> {username || "Utilisateur connecté"}</p>
-        <p><strong>Statut :</strong> Authentifié</p>
-        <button
-          className="btn btn-outline-danger mt-3"
-          onClick={() => {
-            localStorage.clear();
-            navigate("/login");
-          }}
-        >
-          🔐 Se déconnecter
-        </button>
-      </div>
-    </div>
+    <Container className="mt-4">
+      <h2>👤 Mon Profil</h2>
+      <Card className="p-3 shadow-sm">
+        <p><strong>Nom :</strong> {user.name}</p>
+        <p><strong>Email :</strong> {user.email}</p>
+        <p><strong>Rôle :</strong> {user.role}</p>
+        <Button variant="outline-danger">Se déconnecter</Button>
+      </Card>
+    </Container>
   );
 };
 
