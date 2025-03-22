@@ -12,13 +12,19 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   backend:
     build: ./backend
     ports:
       - "5001:5001"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DB_HOST=db
       - DB_USER=root
@@ -26,6 +32,7 @@ services:
       - DB_NAME=sportstore
       - VULNERABLE=true
       - JWT_SECRET=sporthacksupersecretkey
+    restart: always
 
   frontend:
     build: ./frontend

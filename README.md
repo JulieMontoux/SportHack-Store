@@ -37,17 +37,35 @@ Le mode s’active via une variable d’environnement `VULNERABLE=true` ou `VULN
 
 ## 🔐 Vulnérabilités OWASP intégrées
 
-Le projet implémente 5 vulnérabilités majeures identifiées dans le Top 10 OWASP 2021 :
+Le projet implémente 10 vulnérabilités majeures identifiées dans le Top 10 OWASP 2021 :
 
-### 1️⃣ SQL Injection (OWASP A01 - Injection)
+### 1️⃣ [SQL Injection (OWASP A01 - Injection)](docs/vulnerabilities/sql-injection.md)
 
-### 2️⃣ Authentification cassée (OWASP A02 - Broken Authentication)
+### 2️⃣ [Authentification cassée (OWASP A02 - Broken Authentication)](docs/vulnerabilities/broken-authentication.md)
 
-### 3️⃣ Exposition de données sensibles (OWASP A03 - Sensitive Data Exposure)
+### 3️⃣ [Exposition de données sensibles (OWASP A03 - Sensitive Data Exposure)](docs/vulnerabilities/sensitive-data-exposure.md)
 
-### 4️⃣ Mauvaise configuration de sécurité (OWASP A05 - Security Misconfiguration)
+### 4️⃣ [Mauvaise configuration de sécurité (OWASP A05 - Security Misconfiguration)](docs/vulnerabilities/security-misconfiguration.md)
 
-### 5️⃣ Cross-Site Scripting (OWASP A07 - XSS)
+### 5️⃣ [Cross-Site Scripting (OWASP A07 - XSS)](docs/vulnerabilities/xss.md)
+
+### 6️⃣ [Business Logic Bypass](docs/vulnerabilities/business-logic-bypass.md)
+
+### 7️⃣ [Mass Assignment](docs/vulnerabilities/mass-assignment.md)
+
+### 8️⃣ [Open Redirect](docs/vulnerabilities/open-redirect.md)
+
+### 9️⃣ [JWT Signature non validée](docs/vulnerabilities/jwt-signature-bypass.md)
+
+### 🔟 [Absence de Rate Limiting](docs/vulnerabilities/rate-limiting.md)
+
+Des vulnérabilités supplémentaires sont prévues en bonus :
+
+- [IDOR (accès à des données d'un autre utilisateur)](docs/vulnerabilities/idor.md)
+- [CSRF (sur suppression produit par POST)](docs/vulnerabilities/csrf.md)
+- [Session Fixation](docs/vulnerabilities/session-fixation.md)
+- [Clickjacking](docs/vulnerabilities/clickjacking.md)
+- [Insecure Deserialization](docs/vulnerabilities/insecure-deserialization.md)
 
 ---
 
@@ -56,37 +74,39 @@ Le projet implémente 5 vulnérabilités majeures identifiées dans le Top 10 OW
 ```txt
 /SportHack-Store
 ├── backend/
-│   ├── controllers/         → Logique métier (produits, auth, utilisateurs)
-│   ├── routes/              → Définition des endpoints API
-│   ├── models/              → Connexion BDD (db.js) et futurs modèles ORM
-│   ├── middleware/          → Authentification, gestion des rôles, sécurité, détection du mode actif
-│   ├── .env.example         → Variables d’environnement modèle
-│   ├── Dockerfile           → Conteneurisation backend
-│   └── server.js            → Point d’entrée API
-│   └── package.json         → Dépendances backend
+│   ├── controllers/
+│   ├── routes/
+│   ├── models/
+│   ├── middleware/
+│   ├── .env.example
+│   ├── Dockerfile
+│   ├── server.js
+│   └── package.json
 ├── frontend/
-│   ├── public/              → Fichiers statiques
+│   ├── public/
 │   ├── src/
-│   │   ├── components/      → Composants réutilisables React (LoginForm, Navbar, etc.)
-│   │   ├── pages/           → Pages principales (Accueil, Admin, Panier, etc.)
-│   │   └── services/        → Appels API (axios)
-│   ├── Dockerfile           → Conteneurisation frontend
-│   └── package.json         → Dépendances frontend
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── services/
+│   ├── Dockerfile
+│   └── package.json
 ├── database/
-│   └── dump.sql             → Script SQL de création et insertion de données
-├── docker-compose.yml       → Orchestration des services (backend, frontend, mysql)
-├── README.md
-└── install-demo-video.mp4   → Vidéo pédagogique du projet
+│   └── dump.sql
+├── docker-compose.yml
+├── docs/
+│   └── vulnerabilities/
+│       └── (fiches Markdown de chaque faille OWASP)
+└── README.md
 ```
 
 ---
 
-## 🚀 Initialisation du projet avec Docker
+## 🚀 Initialisation du projet
 
-### 📋 Pré-requis
+### 📋 Prérequis
 
-- Docker installé : <https://www.docker.com/>
-- Docker Compose installé
+- Avoir installé [Docker](https://www.docker.com/)
+- Avoir installé Docker Compose
 
 ### ⚙️ Étapes d’installation
 
@@ -96,7 +116,7 @@ cd sporthack-store
 cp backend/.env.example backend/.env
 ```
 
-Modifiez le fichier `.env` si besoin :
+Modifiez si besoin le fichier `.env` :
 
 ```env
 DB_HOST=db
@@ -104,7 +124,7 @@ DB_USER=root
 DB_PASSWORD=admin
 DB_NAME=sportstore
 JWT_SECRET=secretkey
-VULNERABLE=true   # ou false
+VULNERABLE=true # ou false
 ```
 
 ### ▶️ Lancement du projet
@@ -119,47 +139,40 @@ docker-compose up --build
 docker-compose down -v && docker-compose build --no-cache && docker-compose up
 ```
 
-Accès à l’application : [http://localhost:3000](http://localhost:3000)
+Accès frontend : [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## ✅ Tâches restantes (TODO)
+## ✅ TODO (Checklist du projet)
 
-### 🔧 Fonctions techniques à ajouter
+### 🔧 Fonctionnalités techniques
 
-- [ ] Création de la page d'administration avec listing des produits/utilisateurs
-- [ ] Ajout de rôles utilisateurs (admin, user) et restriction des routes côté backend
-- [ ] Affichage dynamique des requêtes SQL dans le frontend (debug pédagogique)
-- [ ] Page de journalisation des connexions utilisateurs (logins, IP, rôle)
+- [x] Page d’accueil dynamique
+- [x] Page admin avec gestion des produits
+- [x] Page de connexion sécurisée JWT
+- [x] Affichage des requêtes SQL (debug pédagogique)
+- [x] Ajout d’un système de scoring des failles résolues
+- [x] Mode vulnérable / sécurisé toggle
 
-### 🔒 Sécurité & OWASP
+### 🔒 Sécurité / OWASP
 
-- [ ] Intégration d’une 6e faille OWASP : IDOR (accès à une commande d’un autre user)
-- [ ] Option d’ajout d’une fausse faille CSRF sur une suppression produit en POST
+- [x] Intégration des 10 failles principales OWASP 2021
+- [x] Bonus : 5 vulnérabilités avancées intégrées (IDOR, CSRF, etc.)
 
-### 📐 UI/UX
+### 💅 UI/UX
 
-- [ ] Ajout d’un badge dynamique “Mode: Sécurisé / Vulnérable” dans la navbar
-- [ ] Interface plus visuelle des commentaires (pour démonstration XSS)
+- [x] Design Bootstrap soigné
+- [x] Badges “mode actif” dans la navbar
+- [x] Responsive design
 
 ### 🧪 Tests & Documentation
 
-- [ ] Création de tests unitaires backend (ex: loginController)
-- [ ] Ajout d’un fichier Postman ou Swagger pour tester l’API REST
-- [ ] Intégration continue simple (CI) via GitHub Actions
+- [ ] Fiches pédagogiques `.md` pour chaque faille (en cours)
+- [ ] Intégration de Postman / Swagger (optionnel)
 
-### 🌍 Accessibilité & Optimisation
+### 🛠 Optimisations futures
 
-- [ ] Traduction anglaise du frontend (i18n)
-- [ ] Amélioration du responsive/mobile design
-- [ ] Nettoyage du code et séparation stricte logique/présentation
-
----
-
-## 📘 Bonnes pratiques de développement sécurisé
-
-- Toujours utiliser des ORM ou des requêtes préparées
-- Ne jamais stocker des mots de passe en clair
-- Limiter les erreurs retournées aux utilisateurs
-- Restreindre les routes sensibles par des rôles et permissions
-- Valider et filtrer toutes les entrées utilisateur
+- [ ] CI/CD GitHub Actions
+- [ ] Tests unitaires backend et frontend
+- [ ] Traduction i18n (EN/FR)
+- [ ] Journalisation avancée (logs utilisateurs, actions)
