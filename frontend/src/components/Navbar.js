@@ -29,7 +29,6 @@ const AppNavbar = () => {
         {/* Collapsible section */}
         <Navbar.Collapse id="navbar-content">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">Accueil</Nav.Link>
             <Nav.Link as={Link} to="/admin">Admin</Nav.Link>
             <Nav.Link as={Link} to="/profile">Profil</Nav.Link>
             <Nav.Link as={Link} to="/comments">Commentaires</Nav.Link>
