@@ -8,6 +8,7 @@ const LoginForm = () => {
   const [response, setResponse] = useState(null);
 
   const mode = localStorage.getItem("mode"); // "vulnerable" ou "securise"
+  localStorage.setItem("username", res.data.username || "Utilisateur");
 
   const handleLogin = async (e) => {
     e.preventDefault();

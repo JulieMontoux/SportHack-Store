@@ -15,6 +15,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </Router>
   );
