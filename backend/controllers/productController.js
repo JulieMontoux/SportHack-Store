@@ -1,5 +1,5 @@
-const db = require("../../test-final/backend/models/db");
-const getAppMode = require("../../test-final/backend/middleware/getAppMode");
+const db = require("../models/db");
+const getAppMode = require("../middleware/getAppMode");
 
 exports.getAllProducts = (req, res) => {
   const isVulnerable = getAppMode(req);

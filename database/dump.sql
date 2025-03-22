@@ -1,9 +1,13 @@
 -- Suppression si existantes
-DROP TABLE IF EXISTS users , products, orders, comments, scores;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS products; 
+DROP TABLE IF EXISTS orders; 
+DROP TABLE IF EXISTS comments; 
+DROP TABLE IF EXISTS scores;
 
 -- Table users
 CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT PRIMARY KEY,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   role VARCHAR(50) DEFAULT 'user'
@@ -17,7 +21,7 @@ INSERT INTO users (email, password, role) VALUES
 
 -- Table products
 CREATE TABLE products (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT PRIMARY KEY,
   name VARCHAR(100),
   description TEXT,
   price DECIMAL(6,2),
@@ -34,7 +38,7 @@ INSERT INTO products (name, description, price, image) VALUES
 
 -- Table orders
 CREATE TABLE orders (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT PRIMARY KEY,
   user_id INT,
   date DATETIME,
   total DECIMAL(8,2),
@@ -50,7 +54,7 @@ INSERT INTO orders (user_id, date, total, status) VALUES
 
 -- Table comments
 CREATE TABLE comments (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT PRIMARY KEY,
   user VARCHAR(255),
   content TEXT,
   product_id INT,
@@ -64,7 +68,7 @@ INSERT INTO comments (user, content, product_id) VALUES
 ('user2', 'Très bon rapport qualité/prix', 3);
 
 CREATE TABLE scores (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT PRIMARY KEY,
   user_id INT,
   label VARCHAR(255),
   date DATETIME DEFAULT NOW(),

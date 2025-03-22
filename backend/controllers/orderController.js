@@ -1,4 +1,4 @@
-const db = require("../../test-final/backend/models/db");
+const db = require("../models/db");
 
 exports.getAllOrders = (req, res) => {
   const sql = "SELECT * FROM orders ORDER BY date DESC";

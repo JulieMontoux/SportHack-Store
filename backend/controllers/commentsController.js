@@ -1,4 +1,4 @@
-const db = require("../../test-final/backend/models/db");
+const db = require("../models/db");
 
 exports.getAllComments = (req, res) => {
   const sql = "SELECT * FROM comments ORDER BY id DESC";
