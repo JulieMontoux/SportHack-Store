@@ -104,7 +104,7 @@ jobs:
       - name: Install Node (for deploy script)
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Deploy to GitHub Pages
         working-directory: ./frontend
