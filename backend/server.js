@@ -33,6 +33,10 @@ app.get("/", (req, res) => {
   res.send("🎯 API SportH@ck Store opérationnelle !");
 });
 
+app.get('/healthcheck', (req, res) => {
+  res.send('OK');
+});
+
 app.listen(PORT, () => {
   console.log(`✅ Backend API lancée sur le port ${PORT}`);
 });
