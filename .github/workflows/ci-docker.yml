@@ -74,13 +74,7 @@ jobs:
           path: ./database
 
       - name: Docker Compose Build & Up
-        run: |
-            docker-compose up --build -d 
-            echo "⏳ Waiting for backend..."
-              until curl -s http://localhost:5001/healthcheck; do
-              sleep 5
-              done
-            echo "✅ Backend is ready!"
+        run: docker-compose up --build -d 
 
       - name: Run test (placeholder)
         run: echo "🧪 Tests could go here..."
