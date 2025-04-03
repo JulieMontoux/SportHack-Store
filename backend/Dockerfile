@@ -1,12 +1,12 @@
 FROM node:18
 WORKDIR /app
 
+# Copie les fichiers de dépendances
 COPY package*.json ./
 RUN npm install
 
+# Copie le reste du code
 COPY . .
 
-# 🔥 Important : copie le fichier .env dans l'image Docker
-COPY .env .env
-
+# Lance l'app
 CMD ["node", "server.js"]
