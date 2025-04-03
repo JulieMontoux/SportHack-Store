@@ -1,9 +1,12 @@
 FROM node:18
 WORKDIR /app
 
-COPY backend/package*.json ./
+# Copie les fichiers de dépendances
+COPY package*.json ./
 RUN npm install
 
-COPY backend/ .
+# Copie le reste du code
+COPY . .
 
+# Lance l'app
 CMD ["node", "server.js"]
