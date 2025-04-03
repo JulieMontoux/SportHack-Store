@@ -30,11 +30,18 @@ jobs:
 
     - name: Wait for backend to be ready
       run: |
-        echo "Waiting for backend..."
-        until curl -s http://localhost:5001/healthcheck; do
+        echo "⏳ Attente que le backend réponde sur / ..."
+        for i in {1..30}; do
+          if curl -s http://localhost:5001/ | grep -q "SportH@ck"; then
+            echo "✅ Backend prêt !"
+            exit 0
+          fi
+          echo "Tentative $i/30 : backend pas encore dispo..."
           sleep 5
         done
-        echo "Backend is ready!"
+        echo "❌ Backend non disponible après 2min30."
+        docker-compose logs
+        exit 1    
 
     - name: Run test (optional)
       run: echo "Tests could go here..."
