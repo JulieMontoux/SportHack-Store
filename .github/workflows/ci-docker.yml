@@ -5,44 +5,36 @@ on:
     branches: [ main ]
 
 jobs:
-  preload-actions:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/upload-artifact@v4
-        with:
-          name: preload
-          path: ./dummy
-        continue-on-error: true
-
   build-artifacts:
-    needs: preload-actions
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Install backend dependencies
         run: |
           cd backend
           npm install
-          cd ../frontend
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
           npm install
 
       - name: Upload backend
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: backend
           path: backend/
 
       - name: Upload frontend
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: frontend
           path: frontend/
 
       - name: Upload dump
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: dump
           path: database/
@@ -64,19 +56,19 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
 
       - name: Download backend artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: backend
           path: ./backend
 
       - name: Download frontend artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: frontend
           path: ./frontend
 
       - name: Download dump artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: dump
           path: ./database
@@ -86,14 +78,14 @@ jobs:
 
       - name: Wait for backend to be ready
         run: |
-          echo "Waiting for backend..."
+          echo "⏳ Waiting for backend..."
           until curl -s http://localhost:5001/healthcheck; do
             sleep 5
           done
-          echo "Backend is ready!"
+          echo "✅ Backend is ready!"
 
       - name: Run test (placeholder)
-        run: echo "✅ Tests could go here..."
+        run: echo "🧪 Tests could go here..."
 
       - name: Docker Compose Logs
         if: always()
