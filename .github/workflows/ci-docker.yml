@@ -1,6 +1,8 @@
 name: Docker CI - SportHack Store
 
 on:
+  push:
+    branches: [ main, develop ]
   pull_request:
     branches: [ main ]
 
@@ -86,3 +88,28 @@ jobs:
       - name: Shutdown
         if: always()
         run: docker-compose down -v
+
+  deploy:
+    needs: docker-compose-test
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    
+    steps:
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend
+          path: ./frontend
+
+      - name: Install Node (for deploy script)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Deploy to GitHub Pages
+        working-directory: ./frontend
+        run: |
+          npm install gh-pages
+          npm run deploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
