@@ -37,32 +37,35 @@ Le mode s’active via une variable d’environnement `VULNERABLE=true` ou `VULN
 
 ## 🔐 Vulnérabilités OWASP intégrées
 
-Le projet implémente 5 vulnérabilités majeures identifiées dans le Top 10 OWASP 2021 :
+Le projet implémente 10 vulnérabilités majeures identifiées dans le Top 10 OWASP 2021 :
 
-### 1️⃣ SQL Injection (OWASP A01 - Injection)
+### 1️⃣ [SQL Injection (OWASP A01 - Injection)](docs/vulnerabilities/sql-injection.md)
 
-- **Description** : L'utilisateur peut injecter du SQL dans les champs de recherche ou de connexion.
-- **Correction** : Utilisation de requêtes préparées (paramétrées) et d'un ORM dans le mode sécurisé.
+### 2️⃣ [Authentification cassée (OWASP A02 - Broken Authentication)](docs/vulnerabilities/broken-authentication.md)
 
-### 2️⃣ Authentification cassée (OWASP A02 - Broken Authentication)
+### 3️⃣ [Exposition de données sensibles (OWASP A03 - Sensitive Data Exposure)](docs/vulnerabilities/sensitive-data-exposure.md)
 
-- **Description** : Le système d’authentification n’expire jamais, les tokens sont réutilisables à volonté, et aucune protection contre le bruteforce n’est en place.
-- **Correction** : JWT avec expiration, protection contre le bruteforce, et limitation de tentatives (throttling).
+### 4️⃣ [Mauvaise configuration de sécurité (OWASP A05 - Security Misconfiguration)](docs/vulnerabilities/security-misconfiguration.md)
 
-### 3️⃣ Exposition de données sensibles (OWASP A03 - Sensitive Data Exposure)
+### 5️⃣ [Cross-Site Scripting (OWASP A07 - XSS)](docs/vulnerabilities/xss.md)
 
-- **Description** : Les mots de passe sont stockés en clair, les données de carte bancaire sont accessibles en clair dans le localStorage du navigateur.
-- **Correction** : Hashage des mots de passe avec bcrypt, suppression des données sensibles côté client, chiffrement des communications.
+### 6️⃣ [Business Logic Bypass](docs/vulnerabilities/business-logic-bypass.md)
 
-### 4️⃣ Mauvaise configuration de sécurité (OWASP A05 - Security Misconfiguration)
+### 7️⃣ [Mass Assignment](docs/vulnerabilities/mass-assignment.md)
 
-- **Description** : Les routes administratives sont accessibles sans authentification ni vérification de rôle.
-- **Correction** : Mise en place d’un middleware de vérification de rôle, restriction d’accès aux routes sensibles.
+### 8️⃣ [Open Redirect](docs/vulnerabilities/open-redirect.md)
 
-### 5️⃣ Cross-Site Scripting (OWASP A07 - Cross-Site Scripting - XSS)
+### 9️⃣ [JWT Signature non validée](docs/vulnerabilities/jwt-signature-bypass.md)
 
-- **Description** : Un utilisateur peut insérer du script dans les commentaires produits.
-- **Correction** : Échappement des entrées utilisateur et sanitation HTML.
+### 🔟 [Absence de Rate Limiting](docs/vulnerabilities/rate-limiting.md)
+
+Des vulnérabilités supplémentaires sont prévues en bonus :
+
+- [IDOR (accès à des données d'un autre utilisateur)](docs/vulnerabilities/idor.md)
+- [CSRF (sur suppression produit par POST)](docs/vulnerabilities/csrf.md)
+- [Session Fixation](docs/vulnerabilities/session-fixation.md)
+- [Clickjacking](docs/vulnerabilities/clickjacking.md)
+- [Insecure Deserialization](docs/vulnerabilities/insecure-deserialization.md)
 
 ---
 
@@ -71,87 +74,105 @@ Le projet implémente 5 vulnérabilités majeures identifiées dans le Top 10 OW
 ```txt
 /SportHack-Store
 ├── backend/
-│   ├── controllers/       → Logique métier (produits, auth, utilisateurs)
-│   ├── routes/            → Définition des endpoints API
-│   ├── models/            → Schémas de base de données (ORM ou requêtes)
-│   ├── middleware/        → Authentification, gestion des rôles, sécurité
-│   └── .env               → Fichier de configuration du mode (vulnérable/sécurisé)
+│   ├── controllers/
+│   ├── routes/
+│   ├── models/
+│   ├── middleware/
+│   ├── .env.example
+│   ├── Dockerfile
+│   ├── server.js
+│   └── package.json
 ├── frontend/
+│   ├── public/
 │   ├── src/
-│   │   ├── components/    → Composants React réutilisables (cartes produits, formulaires, etc.)
-│   │   ├── pages/         → Pages principales (Accueil, Panier, Admin, etc.)
-│   │   └── services/      → API Service (axios/fetch)
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── services/
+│   ├── Dockerfile
+│   └── package.json
 ├── database/
-│   └── dump.sql           → Script SQL pour peupler la base avec des données d'exemple
-├── docker-compose.yml     → Configuration multi-container (frontend, backend, db)
-├── README.md
-└── install-demo-video.mp4 → Vidéo de démonstration et présentation des failles
+│   └── dump.sql
+├── docker-compose.yml
+├── docs/
+│   └── vulnerabilities/
+│       └── (fiches Markdown de chaque faille OWASP)
+└── README.md
 ```
 
 ---
 
-## 🚀 Lancement du projet avec Docker
+## 🚀 Initialisation du projet
 
-### Pré-requis : Docker & Docker Compose installés
+### 📋 Prérequis
 
-### Étapes
+- Avoir installé [Docker](https://www.docker.com/)
+- Avoir installé Docker Compose
+
+### ⚙️ Étapes d’installation
 
 ```bash
-git clone https://github.com/<votre-pseudo>/sporthack-store.git
+git clone https://github.com/JulieMontoux/SportHack-Store.git
 cd sporthack-store
 cp backend/.env.example backend/.env
 ```
 
-⚙️ Modifiez le fichier `.env` pour choisir le mode :
+Modifiez si besoin le fichier `.env` :
 
-```txt
+```env
 DB_HOST=db
 DB_USER=root
 DB_PASSWORD=admin
 DB_NAME=sportstore
-VULNERABLE=true   # ou false
+JWT_SECRET=secretkey
+VULNERABLE=true # ou false
 ```
 
-### Lancez le projet
+### ▶️ Lancement du projet
 
 ```bash
 docker-compose up --build
 ```
 
-Accès à l’application : [http://localhost:3000](http://localhost:3000)
+✅ Ou pour tout reconstruire sans cache :
+
+```bash
+docker-compose down -v && docker-compose build --no-cache && docker-compose up
+```
+
+Accès frontend : [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🧪 Démonstration des vulnérabilités
+## ✅ TODO (Checklist du projet)
 
-Une vidéo incluse (`install-demo-video.mp4`) présente :
+### 🔧 Fonctionnalités techniques
 
-- L’installation pas à pas du projet
-- L’exploitation des 5 failles (SQLi, XSS, Auth, etc.)
-- Le comportement en mode sécurisé (comparaison)
-- Les explications pédagogiques pour chaque correctif apporté
+- [x] Page d’accueil dynamique
+- [x] Page admin avec gestion des produits
+- [x] Page de connexion sécurisée JWT
+- [x] Affichage des requêtes SQL (debug pédagogique)
+- [x] Ajout d’un système de scoring des failles résolues
+- [x] Mode vulnérable / sécurisé toggle
 
-Vous pouvez également vous référer aux walkthroughs :
+### 🔒 Sécurité / OWASP
 
-- <https://github.com/juice-shop/juice-shop/blob/master/SOLUTIONS.md>
-- <https://github.com/bsqrl/juice-shop-walkthrough>
+- [x] Intégration des 10 failles principales OWASP 2021
+- [x] Bonus : 5 vulnérabilités avancées intégrées (IDOR, CSRF, etc.)
 
----
+### 💅 UI/UX
 
-## 📄 Dump SQL
+- [x] Design Bootstrap soigné
+- [x] Badges “mode actif” dans la navbar
+- [x] Responsive design
 
-Le fichier `dump.sql` contient :
+### 🧪 Tests & Documentation
 
-- Création des tables `users`, `products`, `orders`, `comments`
-- Données de démonstration
-- Différenciation des données si nécessaire entre mode vulnérable/sécurisé
+- [ ] Fiches pédagogiques `.md` pour chaque faille (en cours)
+- [ ] Intégration de Postman / Swagger (optionnel)
 
----
+### 🛠 Optimisations futures
 
-## 📘 Bonnes pratiques de développement sécurisé
-
-- Toujours utiliser des ORM ou des requêtes préparées
-- Ne jamais stocker des mots de passe en clair
-- Limiter les erreurs retournées aux utilisateurs
-- Restreindre les routes sensibles par des rôles et permissions
-- Valider et filtrer toutes les entrées utilisateur
+- [ ] CI/CD GitHub Actions
+- [ ] Tests unitaires backend et frontend
+- [ ] Traduction i18n (EN/FR)
+- [ ] Journalisation avancée (logs utilisateurs, actions)
