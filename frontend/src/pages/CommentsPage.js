@@ -15,7 +15,6 @@ const CommentsPage = () => {
   return (
     <Container className="mt-4">
       <h2>💬 Avis des utilisateurs</h2>
-      <CommentCard />
       {comments.length === 0 ? (
         <p>Aucun commentaire pour le moment.</p>
       ) : (
