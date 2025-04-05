@@ -14,11 +14,14 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const res = await api.post("/auth/login", { email, password });
-      setResponse({ success: true, message: `✅ Connexion réussie ! Token : ${res.data.token}` });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.username || "Utilisateur");
+      setResponse({ success: true, message: `✅ Connexion réussie !` });
     } catch (err) {
       setResponse({ success: false, message: "❌ Connexion échouée : Identifiants invalides" });
     }
   };
+  
 
   return (
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
