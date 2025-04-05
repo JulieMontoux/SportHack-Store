@@ -51,7 +51,7 @@ const LoginForm = () => {
         <div className="mb-3">
           <label className="form-label">Mot de passe</label>
           <input
-            type={mode === "securise" ? "text" : "password"}
+            type={mode === "securise" ? "password" : "text"}
             className="form-control"
             placeholder="Entrez votre mot de passe"
             value={password}
