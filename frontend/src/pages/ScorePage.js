@@ -18,11 +18,6 @@ const allChallenges = [
     link: "/SportHack-Store/docs/vulnerabilities/3_sensitive-data-exposure.md",
   },
   {
-    label: "Insecure Design (A04)",
-    key: "insecure_design",
-    link: "/SportHack-Store/docs/vulnerabilities/insecure-deserialization.md",
-  },
-  {
     label: "Security Misconfiguration (A05)",
     key: "security_misconfig",
     link: "/SportHack-Store/docs/vulnerabilities/4_security-misconfiguration.md",
@@ -31,26 +26,6 @@ const allChallenges = [
     label: "XSS (A07)",
     key: "xss_triggered",
     link: "/SportHack-Store/docs/vulnerabilities/5_xss.md",
-  },
-  {
-    label: "Vulnerable Components (A06)",
-    key: "vulnerable_components_loaded",
-    link: "/SportHack-Store/docs/vulnerabilities/vulnerable_components.md",
-  },
-  {
-    label: "Integrity Failures (A08)",
-    key: "integrity_failures",
-    link: "/SportHack-Store/docs/vulnerabilities/integrity_failures.md",
-  },
-  {
-    label: "Logging Failures (A09)",
-    key: "logging_failure",
-    link: "/SportHack-Store/docs/vulnerabilities/logging_failures.md",
-  },
-  {
-    label: "SSRF (A10)",
-    key: "ssrf_attempt",
-    link: "/SportHack-Store/docs/vulnerabilities/ssrf.md",
   },
   {
     label: "Business Logic Bypass (ADV)",
@@ -77,6 +52,31 @@ const allChallenges = [
     key: "rate_limiting_absent",
     link: "/SportHack-Store/docs/vulnerabilities/10_rate-limiting.md",
   },
+  {
+    label: "Clickjacking (ADV)",
+    key: "clickjacking_attempt",
+    link: "/SportHack-Store/docs/vulnerabilities/clickjacking.md",
+  },
+  {
+    label: "CSRF (ADV)",
+    key: "csrf_attempt",
+    link: "/SportHack-Store/docs/vulnerabilities/csrf.md",
+  },
+  {
+    label: "IDOR (ADV)",
+    key: "idor_triggered",
+    link: "/SportHack-Store/docs/vulnerabilities/idor.md",
+  },
+  {
+    label: "Insecure Deserialization (ADV)",
+    key: "insecure_deserialization",
+    link: "/SportHack-Store/docs/vulnerabilities/insecure-deserialization.md",
+  },
+  {
+    label: "Session Fixation (ADV)",
+    key: "session_fixation",
+    link: "/SportHack-Store/docs/vulnerabilities/session-fixation.md",
+  }
 ];
 
 const ScorePage = () => {
