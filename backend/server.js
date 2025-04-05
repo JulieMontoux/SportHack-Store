@@ -22,18 +22,18 @@ const scoreRoutes = require("./routes/score");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 
-app.use("/api/products", productRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/comments", commentRoutes);
-app.use("/api/scores", scoreRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/login", adminRoutes);
+app.use("https://sporthack-store.onrender.com/api/products", productRoutes);
+app.use("https://sporthack-store.onrender.com/api/orders", orderRoutes);
+app.use("https://sporthack-store.onrender.com/api/comments", commentRoutes);
+app.use("https://sporthack-store.onrender.com/api/scores", scoreRoutes);
+app.use("https://sporthack-store.onrender.com/api/auth", authRoutes);
+app.use("https://sporthack-store.onrender.com/api/login", adminRoutes);
 
-app.get("/api", (req, res) => {
+app.get("https://sporthack-store.onrender.com/api", (req, res) => {
   res.send("🎯 API SportH@ck Store opérationnelle !");
 });
 
-app.get('/api/healthcheck', (req, res) => {
+app.get('https://sporthack-store.onrender.com/api/healthcheck', (req, res) => {
   res.send('OK');
 });
 
