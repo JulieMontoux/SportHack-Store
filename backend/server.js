@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const getAppMode = require("./middleware/getAppMode");
-const rateLimiter = require("./middleware/rateLimitMiddleware"); // ✅ Ajout ici
+const rateLimiter = require("./middleware/rateLimiter"); // ✅ Ajout ici
 
 const app = express();
 const PORT = process.env.PORT || 5000;
