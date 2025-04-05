@@ -37,6 +37,11 @@ app.get('/api/healthcheck', (req, res) => {
   res.send('OK');
 });
 
+const rateLimiter = require("./middleware/rateLimiter");
+app.get("/test-rate", rateLimiter, (req, res) => {
+  res.send("OK - pas bloqué");
+});
+
 app.listen(PORT, () => {
   console.log(`✅ Backend API lancée sur le port ${PORT}`);
 });
