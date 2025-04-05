@@ -8,9 +8,9 @@ const ScorePage = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
+  
     if (!user) return;
-
+  
     const allChecks = [
       { label: "SQL Injection (A01)", key: "sql_succeed" },
       { label: "Broken Authentication (A02)", condition: () => user?.email?.includes("@") },
@@ -28,27 +28,26 @@ const ScorePage = () => {
       { label: "JWT None Signature (ADV)", condition: () => !!token },
       { label: "Rate Limiting Absent (ADV)", key: "rate_limiting_absent" }
     ];
-
-    // Récupérer scores déjà enregistrés
+  
     fetch(`https://sporthack-store.onrender.com/api/scores?user_id=${user.id}`)
       .then((res) => res.json())
       .then((data) => {
         const alreadyDone = data.achievements.map((a) => a.label);
-
-        // Vérifier les nouveaux succès
         const detected = [];
         for (const c of allChecks) {
-          if (c.key && localStorage.getItem(c.key)) {
-            if (!alreadyDone.includes(c.label)) detected.push(c.label);
-            break;
-          }
-          if (c.condition && c.condition()) {
-            if (!alreadyDone.includes(c.label)) detected.push(c.label);
+          const isNew =
+            (c.key && localStorage.getItem(c.key)) ||
+            (c.condition && c.condition());
+  
+          if (isNew && !alreadyDone.includes(c.label)) {
+            const lastSent = localStorage.getItem("_last_vuln_sent");
+            if (lastSent !== c.label) {
+              detected.push(c.label);
+              localStorage.setItem("_last_vuln_sent", c.label);
+            }
             break;
           }
         }
-
-        // Enregistrer ceux détectés
         detected.forEach((label) => {
           fetch(`https://sporthack-store.onrender.com/api/scores`, {
             method: "POST",
@@ -56,11 +55,10 @@ const ScorePage = () => {
             body: JSON.stringify({ user_id: user.id, label }),
           });
         });
-
         setCompleted([...alreadyDone, ...detected]);
       })
       .catch((err) => console.error("❌ Erreur récupération scores :", err));
-  }, []);
+  }, []);  
 
   const allChallenges = {
     "SQL Injection (A01)": "/SportHack-Store/docs/vulnerabilities/1_sql-injection.md",
