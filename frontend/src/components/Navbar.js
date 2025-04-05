@@ -3,21 +3,26 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaSignOutAlt } from "react-icons/fa";
 
 const Navbar = () => {
-  const [mode, setMode] = useState(localStorage.getItem("mode") || "vulnerable");
+  const [mode, setMode] = useState(
+    localStorage.getItem("mode") || "vulnerable"
+  );
   const [user, setUser] = useState(null);
   const [cartCount, setCartCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Met à jour le mode et panier selon la route
   useEffect(() => {
     setMode(localStorage.getItem("mode") || "vulnerable");
-
-    const userData = localStorage.getItem("user");
-    if (userData) setUser(JSON.parse(userData));
-
     const cartData = JSON.parse(localStorage.getItem("cart")) || [];
     setCartCount(cartData.length);
   }, [location]);
+
+  // Met à jour l'utilisateur indépendamment
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    setUser(userData ? JSON.parse(userData) : null);
+  }, [location, localStorage.getItem("user")]);
 
   const toggleMode = () => {
     const newMode = mode === "vulnerable" ? "securise" : "vulnerable";
@@ -29,6 +34,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    setUser(null); // ← très important
     navigate("/");
   };
 
@@ -41,17 +47,25 @@ const Navbar = () => {
       <div className="collapse navbar-collapse">
         <ul className="navbar-nav mx-auto">
           <li className="nav-item mx-2">
-            <Link to="/products" className="nav-link">Produits</Link>
+            <Link to="/products" className="nav-link">
+              Produits
+            </Link>
           </li>
           <li className="nav-item mx-2">
-            <Link to="/comments" className="nav-link">Commentaires</Link>
+            <Link to="/comments" className="nav-link">
+              Commentaires
+            </Link>
           </li>
           <li className="nav-item mx-2">
-            <Link to="/scores" className="nav-link">Scores</Link>
+            <Link to="/scores" className="nav-link">
+              Scores
+            </Link>
           </li>
           {user?.role === "admin" && (
             <li className="nav-item mx-2">
-              <Link to="/admin" className="nav-link text-danger">Admin</Link>
+              <Link to="/admin" className="nav-link text-danger">
+                Admin
+              </Link>
             </li>
           )}
         </ul>
