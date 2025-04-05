@@ -26,10 +26,16 @@ exports.login = (req, res) => {
 
     if (user) {
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-      return res.json({ token, user: { id: user.id, email: user.email, role : user.role} });
-    } else {
-      return res.status(401).json({ error: "Identifiants incorrects" });
+    
+      const triggered = isVulnerable ? "sql_succeed" : null;
+    
+      return res.json({ 
+        token, 
+        user: { id: user.id, email: user.email, role: user.role },
+        triggered 
+      });
     }
+    
   } catch (err) {
     console.error("❌ ERREUR SQL (login):", err.message);
     return res.status(500).json({ error: "Erreur SQL" });
