@@ -7,7 +7,7 @@ const AdminProductsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/products").then((res) => setProducts(res.data));
+      .get("https://sporthack-store.onrender.com/api/products").then((res) => setProducts(res.data));
   }, []);
 
   const handleDelete = (id) => {

@@ -8,7 +8,7 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/products")
+      .get("https://sporthack-store.onrender.com/api/products")
       .then((res) => setFeaturedProducts(res.data.slice(0, 3)))
       .catch((err) => console.error("Erreur chargement produits :", err));
   }, []);

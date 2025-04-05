@@ -9,7 +9,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/products/${id}`)
+      .get(`https://sporthack-store.onrender.com/api/products/${id}`)
       .then((res) => setProduct(res.data))
       .catch((err) => setMessage("❌ Produit introuvable."));
   }, [id]);

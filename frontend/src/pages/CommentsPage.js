@@ -7,7 +7,7 @@ const CommentsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/comments")
+      .get("https://sporthack-store.onrender.com/api/comments")
       .then((res) => setComments(res.data))
       .catch((err) => console.error("Erreur commentaires :", err));
   }, []);

@@ -7,7 +7,7 @@ const AdminOrdersPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/orders").then((res) => setOrders(res.data));
+      .get("https://sporthack-store.onrender.com/api/orders").then((res) => setOrders(res.data));
   }, []);
 
   return (

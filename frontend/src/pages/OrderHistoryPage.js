@@ -7,7 +7,7 @@ const OrderHistoryPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/orders")
+      .get("https://sporthack-store.onrender.com/api/orders")
       .then((res) => setOrders(res.data))
       .catch((err) => console.error("Erreur chargement commandes :", err));
   }, []);

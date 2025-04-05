@@ -12,12 +12,12 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/products/${id}`)
+      .get(`https://sporthack-store.onrender.com/api/products/${id}`)
       .then((res) => setProduct(res.data))
       .catch((err) => console.error("Erreur produit :", err));
 
     axios
-      .get(`http://localhost:5001/api/comments`)
+      .get(`https://sporthack-store.onrender.com/api/comments`)
       .then((res) =>
         setComments(res.data.filter((c) => c.product_id === Number(id)))
       )
@@ -41,7 +41,7 @@ const ProductDetailPage = () => {
     if (!user) return alert("Connectez-vous pour commenter");
 
     try {
-      await axios.post("http://localhost:5001/api/comments", {
+      await axios.post("https://sporthack-store.onrender.com/api/comments", {
         user: user.email,
         content: comment,
         product_id: id,

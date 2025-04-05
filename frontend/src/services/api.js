@@ -3,7 +3,7 @@ import axios from 'axios';
 const mode = localStorage.getItem('mode') || 'vulnerable';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5001/api',
+  baseURL: 'https://sporthack-store.onrender.com/api',
   headers: {
     'X-App-Mode': mode
   }
