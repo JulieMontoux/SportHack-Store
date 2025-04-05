@@ -20,7 +20,7 @@ import { ModeProvider } from "./context/ModeContext";
 function App() {
   return (
     <ModeProvider>
-      <Router basename="/SportHack-Store">
+      <Router>
         <AppNavbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
