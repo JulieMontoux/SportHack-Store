@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/SportHack-Store/static/css/main.d221dc40.css",
+    "main.js": "/SportHack-Store/static/js/main.450939e8.js",
+    "index.html": "/SportHack-Store/index.html",
+    "main.d221dc40.css.map": "/SportHack-Store/static/css/main.d221dc40.css.map",
+    "main.450939e8.js.map": "/SportHack-Store/static/js/main.450939e8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d221dc40.css",
+    "static/js/main.450939e8.js"
+  ]
+}
