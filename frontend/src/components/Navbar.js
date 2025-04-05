@@ -21,23 +21,36 @@ const AppNavbar = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
       <Container>
-        <Navbar.Brand as={Link} to="/SportHack-Store/">🏀 SportH@ck Store</Navbar.Brand>
-        
+        <Navbar.Brand as={Link} to="/SportHack-Store/">
+          🏀 SportH@ck Store
+        </Navbar.Brand>
+
         {/* Toggle button responsive */}
         <Navbar.Toggle aria-controls="navbar-content" />
 
         {/* Collapsible section */}
         <Navbar.Collapse id="navbar-content">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/SportHack-Store/admin">Admin</Nav.Link>
-            <Nav.Link as={Link} to="/SportHack-Store/profile">Profil</Nav.Link>
-            <Nav.Link as={Link} to="/SportHack-Store/comments">Commentaires</Nav.Link>
-            <Nav.Link as={Link} to="/SportHack-Store/scores">Scores</Nav.Link>
+            <Nav.Link as={Link} to="/SportHack-Store/admin">
+              Admin
+            </Nav.Link>
+            <Nav.Link as={Link} to="/SportHack-Store/profile">
+              Profil
+            </Nav.Link>
+            <Nav.Link as={Link} to="/SportHack-Store/comments">
+              Commentaires
+            </Nav.Link>
+            <Nav.Link as={Link} to="/SportHack-Store/scores">
+              Scores
+            </Nav.Link>
           </Nav>
 
           <div className="d-flex align-items-center gap-2">
-            <Button variant="warning" onClick={toggleMode}>
-              Mode : {mode.toUpperCase()}
+            <Button
+              variant={mode === "vulnerable" ? "danger" : "success"}
+              onClick={toggleMode}
+            >
+              Mode : {mode === "vulnerable" ? "VULNÉRABLE" : "SÉCURISÉ"}
             </Button>
             {token && (
               <Button variant="outline-light" onClick={handleLogout}>
