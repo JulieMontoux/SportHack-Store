@@ -119,6 +119,7 @@ const ProductDetailPage = () => {
         <Button className="mt-2" variant="success" onClick={submitComment}>
           Envoyer
         </Button>
+}
       </Form>
     </Container>
   );

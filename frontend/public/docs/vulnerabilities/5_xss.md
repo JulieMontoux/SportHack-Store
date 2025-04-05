@@ -6,7 +6,7 @@ Scripts injectables via commentaires ou recherche.
 
 ## Exercice
 
-- Laisser un commentaire produit : `<script>alert('XSS')</script>`
+- Laisser un commentaire produit : `<img src="x" onerror="alert('XSS exploité')">`
 - Recharger la page produit.
 
 ## Résultat
