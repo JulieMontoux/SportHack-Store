@@ -3,100 +3,134 @@ import { Container, ListGroup, Badge } from "react-bootstrap";
 
 const ScorePage = () => {
   const [completed, setCompleted] = useState([]);
-  const [lastValidated, setLastValidated] = useState(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
     if (!user) return;
 
-    const allChecks = [
-      { label: "SQL Injection (A01)", key: "sql_succeed" },
-      { label: "Broken Authentication (A02)", condition: () => user?.email?.includes("@") },
-      { label: "Sensitive Data Exposure (A03)", condition: () => !!user?.email },
-      { label: "Insecure Design (A04)", key: "insecure_design" },
-      { label: "Security Misconfiguration (A05)", key: "security_misconfig" },
-      { label: "Vulnerable Components (A06)", key: "vulnerable_components_loaded" },
-      { label: "XSS (A07)", key: "xss_triggered" },
-      { label: "Integrity Failures (A08)", key: "integrity_failures" },
-      { label: "Logging Failures (A09)", key: "logging_failure" },
-      { label: "SSRF (A10)", key: "ssrf_attempt" },
-      { label: "Business Logic Bypass (ADV)", condition: () => cart.length > 0 },
-      { label: "Mass Assignment (ADV)", key: "mass_assignment" },
-      { label: "Open Redirect (ADV)", key: "open_redirect" },
-      { label: "JWT None Signature (ADV)", condition: () => !!token },
-      { label: "Rate Limiting Absent (ADV)", key: "rate_limiting_absent" }
+    // 📌 Challenge unique avec label, clé de validation ou condition, et lien doc
+    const allChallenges = [
+      {
+        label: "SQL Injection (A01)",
+        key: "sql_succeed",
+        link: "/SportHack-Store/docs/vulnerabilities/1_sql-injection.md",
+      },
+      {
+        label: "Broken Authentication (A02)",
+        condition: () => user?.email?.includes("@"),
+        link: "/SportHack-Store/docs/vulnerabilities/2_broken-authentication.md",
+      },
+      {
+        label: "Sensitive Data Exposure (A03)",
+        condition: () => !!user?.email,
+        link: "/SportHack-Store/docs/vulnerabilities/3_sensitive-data-exposure.md",
+      },
+      {
+        label: "Insecure Design (A04)",
+        key: "insecure_design",
+        link: "/SportHack-Store/docs/vulnerabilities/insecure-deserialization.md",
+      },
+      {
+        label: "Security Misconfiguration (A05)",
+        key: "security_misconfig",
+        link: "/SportHack-Store/docs/vulnerabilities/4_security-misconfiguration.md",
+      },
+      {
+        label: "Vulnerable Components (A06)",
+        key: "vulnerable_components_loaded",
+        link: "/SportHack-Store/docs/vulnerabilities/vulnerable_components.md",
+      },
+      {
+        label: "XSS (A07)",
+        key: "xss_triggered",
+        link: "/SportHack-Store/docs/vulnerabilities/5_xss.md",
+      },
+      {
+        label: "Integrity Failures (A08)",
+        key: "integrity_failures",
+        link: "/SportHack-Store/docs/vulnerabilities/integrity_failures.md",
+      },
+      {
+        label: "Logging Failures (A09)",
+        key: "logging_failure",
+        link: "/SportHack-Store/docs/vulnerabilities/logging_failures.md",
+      },
+      {
+        label: "SSRF (A10)",
+        key: "ssrf_attempt",
+        link: "/SportHack-Store/docs/vulnerabilities/ssrf.md",
+      },
+      {
+        label: "Business Logic Bypass (ADV)",
+        condition: () => cart.length > 0,
+        link: "/SportHack-Store/docs/vulnerabilities/6_business-logic-bypass.md",
+      },
+      {
+        label: "Mass Assignment (ADV)",
+        key: "mass_assignment",
+        link: "/SportHack-Store/docs/vulnerabilities/7_mass-assignment.md",
+      },
+      {
+        label: "Open Redirect (ADV)",
+        key: "open_redirect",
+        link: "/SportHack-Store/docs/vulnerabilities/8_open-redirect.md",
+      },
+      {
+        label: "JWT None Signature (ADV)",
+        condition: () => !!token,
+        link: "/SportHack-Store/docs/vulnerabilities/9_jwt-signature-bypass.md",
+      },
+      {
+        label: "Rate Limiting Absent (ADV)",
+        key: "rate_limiting_absent",
+        link: "/SportHack-Store/docs/vulnerabilities/10_rate-limiting.md",
+      },
     ];
 
-    // 1️⃣ Récupérer les scores déjà enregistrés depuis l’API
-    fetch(`https://sporthack-store.onrender.com/api/scores?user_id=${user.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const alreadyDone = data.achievements.map((a) => a.label);
-        let allValidated = [...alreadyDone];
+    // 🧠 Historique local
+    const localValidations = JSON.parse(
+      localStorage.getItem("validated_challenges") || "[]"
+    );
 
-        // 2️⃣ Vérifier la première vulnérabilité trouvée
-        for (const c of allChecks) {
-          const conditionPassed =
-            (c.key && localStorage.getItem(c.key)) ||
-            (c.condition && c.condition());
-
-          if (conditionPassed && !alreadyDone.includes(c.label)) {
-            // 3️⃣ Envoi à l'API
-            fetch(`https://sporthack-store.onrender.com/api/scores`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ user_id: user.id, label: c.label }),
-            }).then(() => {
-              allValidated.push(c.label);
-              setCompleted(allValidated);
-              setLastValidated(c.label);
-
-              // Effet visuel + reset
-              localStorage.setItem("_last_vuln_sent", c.label);
-              setTimeout(() => {
-                localStorage.removeItem("_last_vuln_sent");
-                setLastValidated(null);
-              }, 5000);
-            });
-
-            break; // une seule vulnérabilité détectée à la fois
-          }
-        }
-
-        // 4️⃣ Mise à jour affichage même sans nouvelle détection
-        setCompleted(allValidated);
+    // 1️⃣ On vérifie les validations déclenchées côté navigateur
+    const newlyDetected = allChallenges
+      .filter((c) => {
+        const triggered = c.key ? localStorage.getItem(c.key) : c.condition?.();
+        return triggered && !localValidations.includes(c.label);
       })
-      .catch((err) => console.error("❌ Erreur récupération scores :", err));
-  }, []);
+      .map((c) => c.label);
 
-  const allChallenges = {
-    "SQL Injection (A01)": "/SportHack-Store/docs/vulnerabilities/1_sql-injection.md",
-    "Broken Authentication (A02)": "/SportHack-Store/docs/vulnerabilities/2_broken-authentication.md",
-    "Sensitive Data Exposure (A03)": "/SportHack-Store/docs/vulnerabilities/3_sensitive-data-exposure.md",
-    "Security Misconfiguration (A05)": "/SportHack-Store/docs/vulnerabilities/4_security-misconfiguration.md",
-    "XSS (A07)": "/SportHack-Store/docs/vulnerabilities/5_xss.md",
-    "Insecure Design (A04)": "/SportHack-Store/docs/vulnerabilities/insecure-deserialization.md",
-    "Vulnerable Components (A06)": "/SportHack-Store/docs/vulnerabilities/vulnerable_components.md",
-    "Integrity Failures (A08)": "/SportHack-Store/docs/vulnerabilities/integrity_failures.md",
-    "Logging Failures (A09)": "/SportHack-Store/docs/vulnerabilities/logging_failures.md",
-    "SSRF (A10)": "/SportHack-Store/docs/vulnerabilities/ssrf.md",
-    "Business Logic Bypass (ADV)": "/SportHack-Store/docs/vulnerabilities/6_business-logic-bypass.md",
-    "Mass Assignment (ADV)": "/SportHack-Store/docs/vulnerabilities/7_mass-assignment.md",
-    "Open Redirect (ADV)": "/SportHack-Store/docs/vulnerabilities/8_open-redirect.md",
-    "JWT None Signature (ADV)": "/SportHack-Store/docs/vulnerabilities/9_jwt-signature-bypass.md",
-    "Rate Limiting Absent (ADV)": "/SportHack-Store/docs/vulnerabilities/10_rate-limiting.md"
-  };
+    // 2️⃣ On envoie uniquement les nouveaux labels à l'API
+    newlyDetected.forEach((label) => {
+      fetch(`https://sporthack-store.onrender.com/api/scores`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: user.id, label }),
+      });
+    });
+
+    // 3️⃣ On met à jour le localStorage pour conserver les validations
+    const updatedValidations = Array.from(
+      new Set([...localValidations, ...newlyDetected])
+    );
+    localStorage.setItem(
+      "validated_challenges",
+      JSON.stringify(updatedValidations)
+    );
+
+    // 4️⃣ Mise à jour affichage
+    setCompleted(updatedValidations);
+  }, []);
 
   return (
     <Container className="mt-4">
       <h2 className="mb-3">🎯 Score OWASP - Vulnérabilités découvertes</h2>
       <ListGroup>
-        {Object.entries(allChallenges).map(([label, link], i) => (
+        {allChallenges.map(({ label, link }) => (
           <ListGroup.Item
-            key={i}
+            key={label}
             className="d-flex justify-content-between align-items-center"
           >
             <a
@@ -108,9 +142,7 @@ const ScorePage = () => {
               {label}
             </a>
             {completed.includes(label) ? (
-              <Badge bg="success" className={label === lastValidated ? "flash" : ""}>
-                ✅
-              </Badge>
+              <Badge bg="success">✅</Badge>
             ) : (
               <Badge bg="secondary">❌</Badge>
             )}
