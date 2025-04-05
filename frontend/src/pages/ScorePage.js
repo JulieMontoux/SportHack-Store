@@ -3,14 +3,15 @@ import { Container, ListGroup, Badge } from "react-bootstrap";
 
 const ScorePage = () => {
   const [completed, setCompleted] = useState([]);
+  const [lastValidated, setLastValidated] = useState(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  
+
     if (!user) return;
-  
+
     const allChecks = [
       { label: "SQL Injection (A01)", key: "sql_succeed" },
       { label: "Broken Authentication (A02)", condition: () => user?.email?.includes("@") },
@@ -28,37 +29,48 @@ const ScorePage = () => {
       { label: "JWT None Signature (ADV)", condition: () => !!token },
       { label: "Rate Limiting Absent (ADV)", key: "rate_limiting_absent" }
     ];
-  
+
+    // 1️⃣ Récupérer les scores déjà enregistrés depuis l’API
     fetch(`https://sporthack-store.onrender.com/api/scores?user_id=${user.id}`)
       .then((res) => res.json())
       .then((data) => {
         const alreadyDone = data.achievements.map((a) => a.label);
-        const detected = [];
+        let allValidated = [...alreadyDone];
+
+        // 2️⃣ Vérifier la première vulnérabilité trouvée
         for (const c of allChecks) {
-          const isNew =
+          const conditionPassed =
             (c.key && localStorage.getItem(c.key)) ||
             (c.condition && c.condition());
-  
-          if (isNew && !alreadyDone.includes(c.label)) {
-            const lastSent = localStorage.getItem("_last_vuln_sent");
-            if (lastSent !== c.label) {
-              detected.push(c.label);
+
+          if (conditionPassed && !alreadyDone.includes(c.label)) {
+            // 3️⃣ Envoi à l'API
+            fetch(`https://sporthack-store.onrender.com/api/scores`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ user_id: user.id, label: c.label }),
+            }).then(() => {
+              allValidated.push(c.label);
+              setCompleted(allValidated);
+              setLastValidated(c.label);
+
+              // Effet visuel + reset
               localStorage.setItem("_last_vuln_sent", c.label);
-            }
-            break;
+              setTimeout(() => {
+                localStorage.removeItem("_last_vuln_sent");
+                setLastValidated(null);
+              }, 5000);
+            });
+
+            break; // une seule vulnérabilité détectée à la fois
           }
         }
-        detected.forEach((label) => {
-          fetch(`https://sporthack-store.onrender.com/api/scores`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: user.id, label }),
-          });
-        });
-        setCompleted([...alreadyDone, ...detected]);
+
+        // 4️⃣ Mise à jour affichage même sans nouvelle détection
+        setCompleted(allValidated);
       })
       .catch((err) => console.error("❌ Erreur récupération scores :", err));
-  }, []);  
+  }, []);
 
   const allChallenges = {
     "SQL Injection (A01)": "/SportHack-Store/docs/vulnerabilities/1_sql-injection.md",
@@ -96,7 +108,9 @@ const ScorePage = () => {
               {label}
             </a>
             {completed.includes(label) ? (
-              <Badge bg="success">✅</Badge>
+              <Badge bg="success" className={label === lastValidated ? "flash" : ""}>
+                ✅
+              </Badge>
             ) : (
               <Badge bg="secondary">❌</Badge>
             )}
