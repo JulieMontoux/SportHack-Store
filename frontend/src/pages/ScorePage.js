@@ -6,8 +6,31 @@ const ScorePage = () => {
   const [completed, setCompleted] = useState([]);
 
   useEffect(() => {
-    const local = checkCompletedChallenges();
-    setCompleted(local);
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) return;
+
+    // 1️⃣ Récupérer les succès déjà enregistrés
+    fetch(`https://sporthack-store.onrender.com/api/scores?user_id=${user.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const existingLabels = data.achievements.map((a) => a.label);
+
+        // 2️⃣ Vérifier les succès détectés localement
+        const detected = checkCompletedChallenges();
+        const newLabels = detected.filter((d) => !existingLabels.includes(d));
+
+        newLabels.forEach((label) => {
+          fetch(`https://sporthack-store.onrender.com/api/scores`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: user.id, label }),
+          });
+        });
+
+        // 4️⃣ Rafraîchir la liste complète à afficher
+        setCompleted([...existingLabels, ...newLabels]);
+      })
+      .catch((err) => console.error("Erreur récupération scores :", err));
   }, []);
 
   const allChallenges = {
