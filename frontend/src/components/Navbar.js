@@ -11,7 +11,7 @@ const AppNavbar = () => {
     const newMode = mode === "vulnerable" ? "secure" : "vulnerable";
     localStorage.setItem("mode", newMode);
     window.location.reload();
-  };  
+  };
 
   const handleLogout = () => {
     localStorage.clear();
@@ -52,9 +52,13 @@ const AppNavbar = () => {
             >
               Mode : {mode === "vulnerable" ? "VULNÉRABLE" : "SÉCURISÉ"}
             </Button>
-            {token && (
+            {token ? (
               <Button variant="outline-light" onClick={handleLogout}>
                 Déconnexion
+              </Button>
+            ) : (
+              <Button variant="outline-light" as={Link} to="/login">
+                Connexion
               </Button>
             )}
           </div>
