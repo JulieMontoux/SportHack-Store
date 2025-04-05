@@ -6,14 +6,25 @@ const ProfilePage = () => {
 
   if (!user) return <p className="mt-4 text-center">Non connecté</p>;
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/SportHack-Store"; // ou "/" selon ton routeur
+  };
+
   return (
     <Container className="mt-4">
       <h2>👤 Mon Profil</h2>
       <Card className="p-3 shadow-sm">
-        <p><strong>Nom :</strong> {user.name}</p>
-        <p><strong>Email :</strong> {user.email}</p>
-        <p><strong>Rôle :</strong> {user.role}</p>
-        <Button variant="outline-danger">Se déconnecter</Button>
+        <p>
+          <strong>Email :</strong> {user.email}
+        </p>
+        <p>
+          <strong>Rôle :</strong> {user.role}
+        </p>
+        <Button variant="outline-danger" onClick={handleLogout}>
+          Se déconnecter
+        </Button>
       </Card>
     </Container>
   );

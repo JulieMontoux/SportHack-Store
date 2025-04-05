@@ -7,7 +7,7 @@ const CommentsPage = () => {
 
   useEffect(() => {
     axios
-      .get("/api/comments")
+      .get("http://localhost:5001/api/comments")
       .then((res) => setComments(res.data))
       .catch((err) => console.error("Erreur commentaires :", err));
   }, []);

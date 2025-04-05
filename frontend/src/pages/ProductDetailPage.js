@@ -9,7 +9,7 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/products/${id}`)
+      .get(`/products/${id}`)
       .then((res) => setProduct(res.data))
       .catch((err) => console.error("Erreur produit :", err));
   }, [id]);

@@ -6,11 +6,12 @@ const AdminProductsPage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/products").then((res) => setProducts(res.data));
+    axios
+      .get("http://localhost:5001/api//products").then((res) => setProducts(res.data));
   }, []);
 
   const handleDelete = (id) => {
-    axios.delete(`/api/products/${id}`).then(() => {
+    axios.delete(`/products/${id}`).then(() => {
       setProducts(products.filter((p) => p.id !== id));
     });
   };

@@ -8,14 +8,13 @@ const LoginForm = () => {
   const [response, setResponse] = useState(null);
 
   const mode = localStorage.getItem("mode"); // "vulnerable" ou "securise"
-  localStorage.setItem("username", res.data.username || "Utilisateur");
-
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("username", res.data.username || "Utilisateur");
+      localStorage.setItem("user", JSON.stringify(res.data.user));      
       setResponse({ success: true, message: `✅ Connexion réussie !` });
     } catch (err) {
       setResponse({ success: false, message: "❌ Connexion échouée : Identifiants invalides" });

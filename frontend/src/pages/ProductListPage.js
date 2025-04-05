@@ -9,7 +9,7 @@ const ProductListPage = () => {
 
   useEffect(() => {
     axios
-      .get("/api/products")
+      .get("http://localhost:5001/api/products")
       .then((res) => setProducts(res.data))
       .catch((err) => console.error("Erreur chargement produits :", err));
   }, []);

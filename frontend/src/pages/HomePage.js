@@ -8,7 +8,7 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get("/SportHack-Store/api/products")
+      .get("http://localhost:5001/api/products")
       .then((res) => setFeaturedProducts(res.data.slice(0, 3)))
       .catch((err) => console.error("Erreur chargement produits :", err));
   }, []);
@@ -25,10 +25,10 @@ const HomePage = () => {
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="https://www.istockphoto.com/fr/photos/%C3%A9quipement-de-sport"
+            src="https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg"
             alt="Promo équipement"
           />
-          <Carousel.Caption>
+          <Carousel.Caption className="text-dark">
             <h3>Équipez-vous pour vos performances</h3>
             <p>Profitez des offres exclusives sur les produits en vedette</p>
           </Carousel.Caption>
@@ -36,7 +36,7 @@ const HomePage = () => {
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="https://fr.freepik.com/photos-vecteurs-libre/defi"
+            src="https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt="Défis sécurité OWASP"
           />
           <Carousel.Caption>

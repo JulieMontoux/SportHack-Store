@@ -1,19 +1,13 @@
-const mysql = require('mysql2');
+const path = require('path');
+const fs = require('fs');
+const Database = require('better-sqlite3');
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
+const dbDir = path.resolve(__dirname, './../database');
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir);
+}
 
-db.connect((err) => {
-  if (err) {
-    console.error('❌ Erreur de connexion à la base de données :', err.message);
-    process.exit(1);
-  } else {
-    console.log('✅ Connexion MySQL établie avec succès');
-  }
-});
+const dbPath = path.join(dbDir, 'database.db');
+const db = new Database(dbPath);
 
 module.exports = db;

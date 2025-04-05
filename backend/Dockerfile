@@ -1,12 +1,19 @@
 FROM node:20
+
+# Création du dossier de travail
 WORKDIR /app
 
-# Copie les fichiers de dépendances
+# Copie uniquement package.json pour installer plus vite
 COPY package*.json ./
+
+# Installation des dépendances DANS Docker
 RUN npm install
 
-# Copie le reste du code
+# Copie du reste de ton code
 COPY . .
 
-# Lance l'app
-CMD ["node", "server.js"]
+# Exposition du port backend (si utilisé)
+EXPOSE 5001
+
+# Lancement de l'app
+CMD ["npm", "start"]

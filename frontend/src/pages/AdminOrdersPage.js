@@ -6,7 +6,8 @@ const AdminOrdersPage = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/orders").then((res) => setOrders(res.data));
+    axios
+      .get("http://localhost:5001/api//orders").then((res) => setOrders(res.data));
   }, []);
 
   return (

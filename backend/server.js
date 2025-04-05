@@ -29,11 +29,11 @@ app.use("/api/scores", scoreRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/login", adminRoutes);
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("🎯 API SportH@ck Store opérationnelle !");
 });
 
-app.get('/healthcheck', (req, res) => {
+app.get('/api/healthcheck', (req, res) => {
   res.send('OK');
 });
 

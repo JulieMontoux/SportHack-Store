@@ -9,7 +9,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/products/${id}`)
+      .get(`/products/${id}`)
       .then((res) => setProduct(res.data))
       .catch((err) => setMessage("❌ Produit introuvable."));
   }, [id]);
