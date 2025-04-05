@@ -30,11 +30,11 @@ CREATE TABLE products (
 
 -- Données produits
 INSERT INTO products (name, description, price, image) VALUES
-('Chaussures de Running', 'Chaussures légères pour course sur route.', 79.99, 'https://via.placeholder.com/400x250?text=Running'),
-('Ballon de Football', 'Ballon officiel taille 5 résistant.', 24.50, 'https://via.placeholder.com/400x250?text=Football'),
-('Raquette de Tennis', 'Raquette en graphite idéale pour débutants.', 49.90, 'https://via.placeholder.com/400x250?text=Tennis'),
-('Tapis de Yoga', 'Tapis antidérapant confortable.', 18.99, 'https://via.placeholder.com/400x250?text=Yoga'),
-('Gants de musculation', 'Gants rembourrés pour séances de fitness.', 14.99, 'https://via.placeholder.com/400x250?text=Fitness');
+('Chaussures de Running', 'Chaussures légères pour course sur route.', 79.99, 'https://www.runnea.fr/chaussures-running/modeles/toutes/pour-homme/'),
+('Ballon de Football', 'Ballon officiel taille 5 résistant.', 24.50, 'https://www.gettyimages.fr/photos/ballon-de-football'),
+('Raquette de Tennis', 'Raquette en graphite idéale pour débutants.', 49.90, 'https://www.istockphoto.com/fr/photos/raquette-de-tennis'),
+('Tapis de Yoga', 'Tapis antidérapant confortable.', 18.99, 'https://www.amazon.fr/tapis-de-yoga/s?k=tapis+de+yoga'),
+('Gants de musculation', 'Gants rembourrés pour séances de fitness.', 14.99, 'https://www.pullup-dip.fr/products/weightlifting-gloves');
 
 -- Table orders
 CREATE TABLE orders (
