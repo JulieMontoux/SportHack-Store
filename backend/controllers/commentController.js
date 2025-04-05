@@ -1,4 +1,5 @@
 const db = require("./../models/db");
+const getAppMode = require("./../middleware/getAppMode");
 
 exports.getAllComments = (req, res) => {
   try {
@@ -11,15 +12,25 @@ exports.getAllComments = (req, res) => {
   }
 };
 
+
 exports.addComment = (req, res) => {
   const { user, content, product_id } = req.body;
+  const isVulnerable = getAppMode(req);
+
+  let finalContent = content;
+
+  if (!isVulnerable) {
+    finalContent = content
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
   try {
-    const sql = "INSERT INTO comments (user, content, product_id) VALUES (?, ?, ?)";
-    const stmt = db.prepare(sql);
-    const result = stmt.run(user, content, product_id); // .run() pour les INSERT
-    res.json({ message: "Commentaire ajouté", id: result.lastInsertRowid });
+    const stmt = db.prepare("INSERT INTO comments (user, content, product_id) VALUES (?, ?, ?)");
+    stmt.run(user, finalContent, product_id);
+    res.json({ message: "Commentaire ajouté" });
   } catch (err) {
-    console.error("❌ Erreur ajout commentaire :", err.message);
+    console.error("❌ ERREUR ajout commentaire :", err.message);
     res.status(500).json({ error: "Erreur ajout commentaire" });
   }
 };
