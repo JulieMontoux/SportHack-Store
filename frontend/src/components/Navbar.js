@@ -8,10 +8,10 @@ const AppNavbar = () => {
   const token = localStorage.getItem("token");
 
   const toggleMode = () => {
-    setMode(mode === "vulnerable" ? "secure" : "vulnerable");
+    const newMode = mode === "vulnerable" ? "secure" : "vulnerable";
     localStorage.setItem("mode", newMode);
     window.location.reload();
-  };
+  };  
 
   const handleLogout = () => {
     localStorage.clear();
