@@ -1,25 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { Container, ListGroup, Badge } from "react-bootstrap";
-import { checkCompletedChallenges } from "./../utils/scoreChecker";
 
 const ScorePage = () => {
   const [completed, setCompleted] = useState([]);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
     if (!user) return;
 
-    // 1️⃣ Récupérer les succès déjà enregistrés
+    const allChecks = [
+      { label: "SQL Injection (A01)", key: "sql_succeed" },
+      { label: "Broken Authentication (A02)", condition: () => user?.email?.includes("@") },
+      { label: "Sensitive Data Exposure (A03)", condition: () => !!user?.email },
+      { label: "Insecure Design (A04)", key: "insecure_design" },
+      { label: "Security Misconfiguration (A05)", key: "security_misconfig" },
+      { label: "Vulnerable Components (A06)", key: "vulnerable_components_loaded" },
+      { label: "XSS (A07)", key: "xss_triggered" },
+      { label: "Integrity Failures (A08)", key: "integrity_failures" },
+      { label: "Logging Failures (A09)", key: "logging_failure" },
+      { label: "SSRF (A10)", key: "ssrf_attempt" },
+      { label: "Business Logic Bypass (ADV)", condition: () => cart.length > 0 },
+      { label: "Mass Assignment (ADV)", key: "mass_assignment" },
+      { label: "Open Redirect (ADV)", key: "open_redirect" },
+      { label: "JWT None Signature (ADV)", condition: () => !!token },
+      { label: "Rate Limiting Absent (ADV)", key: "rate_limiting_absent" }
+    ];
+
+    // Récupérer scores déjà enregistrés
     fetch(`https://sporthack-store.onrender.com/api/scores?user_id=${user.id}`)
       .then((res) => res.json())
       .then((data) => {
-        const existingLabels = data.achievements.map((a) => a.label);
+        const alreadyDone = data.achievements.map((a) => a.label);
 
-        // 2️⃣ Vérifier les succès détectés localement
-        const detected = checkCompletedChallenges();
-        const newLabels = detected.filter((d) => !existingLabels.includes(d));
+        // Vérifier les nouveaux succès
+        const detected = [];
+        for (const c of allChecks) {
+          if (c.key && localStorage.getItem(c.key)) {
+            if (!alreadyDone.includes(c.label)) detected.push(c.label);
+            break;
+          }
+          if (c.condition && c.condition()) {
+            if (!alreadyDone.includes(c.label)) detected.push(c.label);
+            break;
+          }
+        }
 
-        newLabels.forEach((label) => {
+        // Enregistrer ceux détectés
+        detected.forEach((label) => {
           fetch(`https://sporthack-store.onrender.com/api/scores`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -27,10 +57,9 @@ const ScorePage = () => {
           });
         });
 
-        // 4️⃣ Rafraîchir la liste complète à afficher
-        setCompleted([...existingLabels, ...newLabels]);
+        setCompleted([...alreadyDone, ...detected]);
       })
-      .catch((err) => console.error("Erreur récupération scores :", err));
+      .catch((err) => console.error("❌ Erreur récupération scores :", err));
   }, []);
 
   const allChallenges = {
