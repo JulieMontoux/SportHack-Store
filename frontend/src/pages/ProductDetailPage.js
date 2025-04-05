@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Row, Col, Card, Button, Alert, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Alert,
+  Form,
+} from "react-bootstrap";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -54,7 +62,8 @@ const ProductDetailPage = () => {
     }
   };
 
-  if (!product) return <p className="text-center mt-5">Chargement du produit...</p>;
+  if (!product)
+    return <p className="text-center mt-5">Chargement du produit...</p>;
 
   return (
     <Container className="mt-4">
@@ -84,12 +93,15 @@ const ProductDetailPage = () => {
         <p>Aucun commentaire pour ce produit.</p>
       ) : (
         <div className="mb-3">
-          {comments.map((c, i) => (
-            <div key={i}>
-              <strong>{c.user}</strong> :{" "}
-              <span dangerouslySetInnerHTML={{ __html: c.content }} />
-            </div>
-          ))}
+          {comments.map((c, i) => {
+            console.log("🧪 Contenu reçu :", c.content);
+            return (
+              <div key={i}>
+                <strong>{c.user}</strong> :{" "}
+                <span dangerouslySetInnerHTML={{ __html: c.content }} />
+              </div>
+            );
+          })}
         </div>
       )}
 
