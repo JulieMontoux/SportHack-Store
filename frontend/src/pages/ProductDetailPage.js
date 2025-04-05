@@ -44,6 +44,17 @@ const ProductDetailPage = () => {
     setMessage("✅ Produit ajouté au panier !");
   };
 
+  useEffect(() => {
+    const foundXSS = comments.some((c) =>
+      /<script.*?>.*<\/script>/i.test(c.content) || /<img\s+[^>]*onerror\s*=/i.test(c.content)
+    );
+  
+    if (foundXSS) {
+      console.log("🧪 XSS détectée dans les commentaires, score validé");
+      localStorage.setItem("xss_triggered", "true");
+    }
+  }, [comments]);
+  
   const submitComment = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) return alert("Connectez-vous pour commenter");
