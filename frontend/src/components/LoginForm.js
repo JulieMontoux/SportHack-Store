@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import api from "../services/api";
 
 const LoginForm = () => {
@@ -13,24 +12,33 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const res = await api.post("/auth/login", { email, password });
-  
+
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-  
+
       if (res.data.triggered) {
         localStorage.setItem(res.data.triggered, "true");
       }
-  
+
       setResponse({ success: true, message: `✅ Connexion réussie !` });
     } catch (err) {
-      setResponse({
-        success: false,
-        message: "❌ Connexion échouée : Identifiants invalides",
-      });
+      if (err.response?.status === 429) {
+        const triggered = err.response.headers["x-ratelimit-triggered"];
+        if (triggered) {
+          localStorage.setItem(triggered, "true");
+        }
+        setResponse({
+          success: false,
+          message: "🚫 Trop de tentatives. Attendez avant de réessayer.",
+        });
+      } else {
+        setResponse({
+          success: false,
+          message: "❌ Connexion échouée : Identifiants invalides",
+        });
+      }
     }
   };
-  
-  
 
   return (
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
