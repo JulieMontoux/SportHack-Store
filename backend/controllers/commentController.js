@@ -23,6 +23,9 @@ exports.addComment = (req, res) => {
     finalContent = content
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
+  }else {
+    // En mode vulnérable, on laisse le contenu tel quel
+    finalContent = content; // <-- aucune transformation
   }
 
   try {
