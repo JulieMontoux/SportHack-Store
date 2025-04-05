@@ -9,7 +9,7 @@ const ProfilePage = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/SportHack-Store"; // ou "/" selon ton routeur
+    window.location.href = "/";
   };
 
   return (
