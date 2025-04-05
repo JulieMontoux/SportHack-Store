@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Row, Col, Card, Button, Form, InputGroup } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, InputGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const ProductListPage = () => {
