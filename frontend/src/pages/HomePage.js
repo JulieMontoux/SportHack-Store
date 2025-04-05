@@ -8,7 +8,7 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get("/api/products")
+      .get("/SportHack-Store/api/products")
       .then((res) => setFeaturedProducts(res.data.slice(0, 3)))
       .catch((err) => console.error("Erreur chargement produits :", err));
   }, []);
@@ -25,7 +25,7 @@ const HomePage = () => {
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="https://images.unsplash.com/photo-1600180758890-3b99a8800c44"
+            src="https://www.istockphoto.com/fr/photos/%C3%A9quipement-de-sport"
             alt="Promo équipement"
           />
           <Carousel.Caption>
@@ -36,7 +36,7 @@ const HomePage = () => {
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="https://images.unsplash.com/photo-1584467735871-4f2fc5e4d392"
+            src="https://fr.freepik.com/photos-vecteurs-libre/defi"
             alt="Défis sécurité OWASP"
           />
           <Carousel.Caption>
@@ -53,7 +53,7 @@ const HomePage = () => {
             <Card className="shadow-sm h-100">
               <Card.Img
                 variant="top"
-                src={product.image || "https://via.placeholder.com/400x250?text=Produit"}
+                src={product.image}
                 style={{ height: "220px", objectFit: "cover" }}
               />
               <Card.Body>
