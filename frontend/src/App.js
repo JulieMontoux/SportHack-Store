@@ -24,37 +24,37 @@ import { ModeProvider } from "./context/ModeContext";
 function App() {
   return (
     <ModeProvider>
-      <Router>
+      <Router basename="/SportHack-Store">
         <AppNavbar />
         <Routes>
-          <Route path="/SportHack-Store/" element={<HomePage />} />
-          <Route path="/SportHack-Store/login" element={<LoginForm />} />
-          <Route path="/SportHack-Store/admin" element={<AdminPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route
-            path="/SportHack-Store/admin/products"
+            path="/admin/products"
             element={<AdminProductsPage />}
           />
           <Route
-            path="/SportHack-Store/admin/orders"
+            path="/admin/orders"
             element={<AdminOrdersPage />}
           />
           <Route
-            path="/SportHack-Store/products"
+            path="/products"
             element={<ProductListPage />}
           />
           <Route
-            path="/SportHack-Store/product/:id"
+            path="/product/:id"
             element={<ProductDetailPage />}
           />
-          <Route path="/SportHack-Store/product" element={<ProductPage />} />
-          <Route path="/SportHack-Store/cart" element={<CartPage />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/cart" element={<CartPage />} />
           <Route
-            path="/SportHack-Store/orders"
+            path="/orders"
             element={<OrderHistoryPage />}
           />
-          <Route path="/SportHack-Store/comments" element={<CommentsPage />} />
-          <Route path="/SportHack-Store/profile" element={<ProfilePage />} />
-          <Route path="/SportHack-Store/scores" element={<ScorePage />} />
+          <Route path="/comments" element={<CommentsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/scores" element={<ScorePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
