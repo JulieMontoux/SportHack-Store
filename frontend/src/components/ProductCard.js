@@ -13,7 +13,7 @@ export const ProductCard = ({ product }) => (
       <Card.Title>{product.name}</Card.Title>
       <Card.Text>{product.description?.slice(0, 100)}...</Card.Text>
       <Card.Text><strong>{product.price} €</strong></Card.Text>
-      <Link to={`/SportHack-Store/produits/${product.id}`} className="btn btn-primary">
+      <Link to={`/produits/${product.id}`} className="btn btn-primary">
         Voir le produit
       </Link>
     </Card.Body>

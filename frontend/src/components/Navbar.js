@@ -15,13 +15,13 @@ const AppNavbar = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/SportHack-Store/login");
+    navigate("/login");
   };
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
       <Container>
-        <Navbar.Brand as={Link} to="/SportHack-Store/">
+        <Navbar.Brand as={Link} to="/">
           🏀 SportH@ck Store
         </Navbar.Brand>
 
@@ -31,16 +31,16 @@ const AppNavbar = () => {
         {/* Collapsible section */}
         <Navbar.Collapse id="navbar-content">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/SportHack-Store/admin">
+            <Nav.Link as={Link} to="/admin">
               Admin
             </Nav.Link>
-            <Nav.Link as={Link} to="/SportHack-Store/profile">
+            <Nav.Link as={Link} to="/profile">
               Profil
             </Nav.Link>
-            <Nav.Link as={Link} to="/SportHack-Store/comments">
+            <Nav.Link as={Link} to="/comments">
               Commentaires
             </Nav.Link>
-            <Nav.Link as={Link} to="/SportHack-Store/scores">
+            <Nav.Link as={Link} to="/scores">
               Scores
             </Nav.Link>
           </Nav>
