@@ -99,21 +99,16 @@ const ScorePage = () => {
           const triggered =
             (challenge.key && localStorage.getItem(challenge.key)) ||
             (challenge.condition && challenge.condition(user, token, cart));
-  
+        
           if (triggered && !alreadySent) {
-            const last = localStorage.getItem("_last_vuln_sent");
-            if (last !== challenge.label) {
-              detected.push(challenge.label);
-              localStorage.setItem("_last_vuln_sent", challenge.label);
-  
-              // ✅ Marquer comme validé en localStorage
-              if (challenge.key) {
-                localStorage.setItem(challenge.key, "true");
-              }
+            detected.push(challenge.label);
+        
+            // 💾 Sauvegarde locale pour l'affichage plus tard
+            if (challenge.key) {
+              localStorage.setItem(challenge.key, "true");
             }
-            break;
           }
-        }
+        }        
   
         detected.forEach((label) => {
           fetch(`https://sporthack-store.onrender.com/api/scores`, {
