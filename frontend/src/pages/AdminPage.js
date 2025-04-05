@@ -11,7 +11,7 @@ const AdminPage = () => {
           <Card className="shadow-sm p-3">
             <h5>Gestion des Produits</h5>
             <p>Ajoutez, modifiez ou supprimez les produits du magasin.</p>
-            <Link to="/admin/produits" className="btn btn-outline-primary">
+            <Link to="/SportHack-Store/admin/produits" className="btn btn-outline-primary">
               Gérer les Produits
             </Link>
           </Card>
@@ -20,7 +20,7 @@ const AdminPage = () => {
           <Card className="shadow-sm p-3">
             <h5>Suivi des Commandes</h5>
             <p>Consultez et traitez les commandes clients.</p>
-            <Link to="/admin/commandes" className="btn btn-outline-secondary">
+            <Link to="/SportHack-Store/admin/commandes" className="btn btn-outline-secondary">
               Gérer les Commandes
             </Link>
           </Card>

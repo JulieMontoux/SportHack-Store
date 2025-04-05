@@ -47,7 +47,7 @@ const ProductListPage = () => {
                 <Card.Text>
                   <strong>{product.price} €</strong>
                 </Card.Text>
-                <Link to={`/produits/${product.id}`} className="btn btn-outline-primary">
+                <Link to={`/SportHack-Store/produits/${product.id}`} className="btn btn-outline-primary">
                   ➕ Détails & Achat
                 </Link>
               </Card.Body>

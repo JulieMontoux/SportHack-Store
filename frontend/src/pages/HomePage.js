@@ -62,7 +62,7 @@ const HomePage = () => {
                 <Card.Text>
                   <strong>{product.price} €</strong>
                 </Card.Text>
-                <Link to={`/produits/${product.id}`} className="btn btn-primary">
+                <Link to={`/SportHack-Store/produits/${product.id}`} className="btn btn-primary">
                   Voir le produit
                 </Link>
               </Card.Body>
