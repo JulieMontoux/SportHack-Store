@@ -1,0 +1,90 @@
+name: Docker CI - SportHack Store
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Upload backend
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend
+          path: backend/
+
+      - name: Upload frontend
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend
+          path: frontend/
+
+      - name: Upload dump
+        uses: actions/upload-artifact@v4
+        with:
+          name: dump
+          path: database/
+
+  docker-compose:
+    needs: build-artifacts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set up Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Download backend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend
+          path: ./backend
+
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend
+          path: ./frontend
+
+      - name: Download dump artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dump
+          path: ./database
+
+      - name: Docker Compose Build & Up
+        run: docker-compose up --build -d 
+
+      - name: Run test (placeholder)
+        run: echo "🧪 Tests could go here..."
+
+      - name: Docker Compose Logs
+        if: always()
+        run: docker-compose logs
+
+      - name: Shutdown
+        if: always()
+        run: docker-compose down -v
