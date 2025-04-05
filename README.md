@@ -16,7 +16,6 @@ Ce projet est également un excellent support pédagogique pour les démonstrati
 
 - **Frontend** : React.js (gestion des vues, appels API, composants dynamiques)
 - **Backend** : Node.js avec Express (API REST, logique métier, sécurisation des routes)
-- **Base de données** : MySQL (stockage des utilisateurs, commandes, produits)
 - **Déploiement** : Docker & Docker Compose (environnement reproductible, simple à installer)
 - **Authentification** : JWT (JSON Web Token)
 
@@ -39,25 +38,25 @@ Le mode s’active via une variable d’environnement `VULNERABLE=true` ou `VULN
 
 Le projet implémente 10 vulnérabilités majeures identifiées dans le Top 10 OWASP 2021 :
 
-### 1️⃣ [SQL Injection (OWASP A01 - Injection)](docs/vulnerabilities/sql-injection.md)
+### 1️⃣ [SQL Injection (OWASP A01 - Injection)](docs/vulnerabilities/1_sql-injection.md)
 
-### 2️⃣ [Authentification cassée (OWASP A02 - Broken Authentication)](docs/vulnerabilities/broken-authentication.md)
+### 2️⃣ [Authentification cassée (OWASP A02 - Broken Authentication)](docs/vulnerabilities/2_broken-authentication.md)
 
-### 3️⃣ [Exposition de données sensibles (OWASP A03 - Sensitive Data Exposure)](docs/vulnerabilities/sensitive-data-exposure.md)
+### 3️⃣ [Exposition de données sensibles (OWASP A03 - Sensitive Data Exposure)](docs/vulnerabilities/3_sensitive-data-exposure.md)
 
-### 4️⃣ [Mauvaise configuration de sécurité (OWASP A05 - Security Misconfiguration)](docs/vulnerabilities/security-misconfiguration.md)
+### 4️⃣ [Mauvaise configuration de sécurité (OWASP A05 - Security Misconfiguration)](docs/vulnerabilities/4_security-misconfiguration.md)
 
-### 5️⃣ [Cross-Site Scripting (OWASP A07 - XSS)](docs/vulnerabilities/xss.md)
+### 5️⃣ [Cross-Site Scripting (OWASP A07 - XSS)](docs/vulnerabilities/5_xss.md)
 
-### 6️⃣ [Business Logic Bypass](docs/vulnerabilities/business-logic-bypass.md)
+### 6️⃣ [Business Logic Bypass](docs/vulnerabilities/6_business-logic-bypass.md)
 
-### 7️⃣ [Mass Assignment](docs/vulnerabilities/mass-assignment.md)
+### 7️⃣ [Mass Assignment](docs/vulnerabilities/7_mass-assignment.md)
 
-### 8️⃣ [Open Redirect](docs/vulnerabilities/open-redirect.md)
+### 8️⃣ [Open Redirect](docs/vulnerabilities/8_open-redirect.md)
 
-### 9️⃣ [JWT Signature non validée](docs/vulnerabilities/jwt-signature-bypass.md)
+### 9️⃣ [JWT Signature non validée](docs/vulnerabilities/9_jwt-signature-bypass.md)
 
-### 🔟 [Absence de Rate Limiting](docs/vulnerabilities/rate-limiting.md)
+### 🔟 [Absence de Rate Limiting](docs/vulnerabilities/10_rate-limiting.md)
 
 Des vulnérabilités supplémentaires sont prévues en bonus :
 
@@ -78,6 +77,8 @@ Des vulnérabilités supplémentaires sont prévues en bonus :
 │   ├── routes/
 │   ├── models/
 │   ├── middleware/
+│   ├──database/
+│   │   └── database.db
 │   ├── .env.example
 │   ├── Dockerfile
 │   ├── server.js
@@ -90,14 +91,18 @@ Des vulnérabilités supplémentaires sont prévues en bonus :
 │   │   └── services/
 │   ├── Dockerfile
 │   └── package.json
-├── database/
-│   └── dump.sql
 ├── docker-compose.yml
 ├── docs/
 │   └── vulnerabilities/
 │       └── (fiches Markdown de chaque faille OWASP)
 └── README.md
 ```
+
+---
+
+## ☁️ Accéder au projet
+
+Via ce lien directement en version web : [https://juliemontoux.github.io/SportHack-Store](https://juliemontoux.github.io/SportHack-Store)
 
 ---
 
@@ -167,12 +172,12 @@ Accès frontend : [http://localhost:3000](http://localhost:3000)
 
 ### 🧪 Tests & Documentation
 
-- [ ] Fiches pédagogiques `.md` pour chaque faille (en cours)
+- [x] Fiches pédagogiques `.md` pour chaque faille
 - [ ] Intégration de Postman / Swagger (optionnel)
 
 ### 🛠 Optimisations futures
 
-- [ ] CI/CD GitHub Actions
+- [x] CI/CD GitHub Actions
 - [ ] Tests unitaires backend et frontend
 - [ ] Traduction i18n (EN/FR)
 - [ ] Journalisation avancée (logs utilisateurs, actions)
