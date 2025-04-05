@@ -1,71 +1,98 @@
-import React from "react";
-import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaShoppingCart, FaUser, FaSignOutAlt } from "react-icons/fa";
 
-const AppNavbar = () => {
+const Navbar = () => {
+  const [mode, setMode] = useState(localStorage.getItem("mode") || "vulnerable");
+  const [user, setUser] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
+  const location = useLocation();
   const navigate = useNavigate();
-  const mode = localStorage.getItem("mode") || "vulnerable";
-  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    setMode(localStorage.getItem("mode") || "vulnerable");
+
+    const userData = localStorage.getItem("user");
+    if (userData) setUser(JSON.parse(userData));
+
+    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartCount(cartData.length);
+  }, [location]);
 
   const toggleMode = () => {
-    const newMode = mode === "vulnerable" ? "secure" : "vulnerable";
+    const newMode = mode === "vulnerable" ? "securise" : "vulnerable";
     localStorage.setItem("mode", newMode);
-    window.location.reload();
+    setMode(newMode);
+    window.location.reload(); // recharge pour backend
   };
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
-      <Container>
-        <Navbar.Brand as={Link} to="/">
-          🏀 SportH@ck Store
-        </Navbar.Brand>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-2 shadow-sm">
+      <Link to="/" className="navbar-brand fs-4 fw-bold text-warning">
+        🏀 SportH@ck Store
+      </Link>
 
-        {/* Toggle button responsive */}
-        <Navbar.Toggle aria-controls="navbar-content" />
+      <div className="collapse navbar-collapse">
+        <ul className="navbar-nav mx-auto">
+          <li className="nav-item mx-2">
+            <Link to="/products" className="nav-link">Produits</Link>
+          </li>
+          <li className="nav-item mx-2">
+            <Link to="/comments" className="nav-link">Commentaires</Link>
+          </li>
+          <li className="nav-item mx-2">
+            <Link to="/scores" className="nav-link">Scores</Link>
+          </li>
+          {user?.role === "admin" && (
+            <li className="nav-item mx-2">
+              <Link to="/admin" className="nav-link text-danger">Admin</Link>
+            </li>
+          )}
+        </ul>
 
-        {/* Collapsible section */}
-        <Navbar.Collapse id="navbar-content">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/admin">
-              Admin
-            </Nav.Link>
-            <Nav.Link as={Link} to="/profile">
-              Profil
-            </Nav.Link>
-            <Nav.Link as={Link} to="/comments">
-              Commentaires
-            </Nav.Link>
-            <Nav.Link as={Link} to="/scores">
-              Scores
-            </Nav.Link>
-          </Nav>
+        <div className="d-flex align-items-center gap-3">
+          <button
+            className={`btn btn-sm fw-bold ${
+              mode === "vulnerable" ? "btn-danger" : "btn-success"
+            }`}
+            onClick={toggleMode}
+          >
+            Mode : {mode.toUpperCase()}
+          </button>
 
-          <div className="d-flex align-items-center gap-2">
-            <Button
-              variant={mode === "vulnerable" ? "danger" : "success"}
-              onClick={toggleMode}
-            >
-              Mode : {mode === "vulnerable" ? "VULNÉRABLE" : "SÉCURISÉ"}
-            </Button>
-            {token ? (
-              <Button variant="outline-light" onClick={handleLogout}>
-                Déconnexion
-              </Button>
-            ) : (
-              <Button variant="outline-light" as={Link} to="/login">
-                Connexion
-              </Button>
+          <Link to="/cart" className="btn btn-outline-light position-relative">
+            <FaShoppingCart />
+            {cartCount > 0 && (
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+                {cartCount}
+              </span>
             )}
-          </div>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </Link>
+
+          {user ? (
+            <>
+              <Link to="/profile" className="btn btn-outline-light">
+                <FaUser className="me-1" /> {user.email}
+              </Link>
+              <button className="btn btn-outline-danger" onClick={handleLogout}>
+                <FaSignOutAlt />
+              </button>
+            </>
+          ) : (
+            <Link to="/login" className="btn btn-outline-light">
+              Connexion
+            </Link>
+          )}
+        </div>
+      </div>
+    </nav>
   );
 };
 
-export default AppNavbar;
+export default Navbar;

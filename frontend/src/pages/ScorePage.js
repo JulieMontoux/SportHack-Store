@@ -1,4 +1,3 @@
-// ScorePage.js
 import React, { useState, useEffect } from "react";
 import { Container, ListGroup, Badge } from "react-bootstrap";
 

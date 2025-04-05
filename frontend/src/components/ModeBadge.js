@@ -1,11 +1,26 @@
-import React from "react";
-import { Badge } from "react-bootstrap";
-import { useMode } from "../context/ModeContext";
+import React, { useState, useEffect } from "react";
 
-export const ModeBadge = () => {
-  const { mode } = useMode();
-  const variant = mode === "vulnerable" ? "danger" : "success";
-  const label = mode === "vulnerable" ? "VULNÉRABLE" : "SÉCURISÉ";
+const ModeBadge = () => {
+  const [mode, setMode] = useState(localStorage.getItem("mode") || "vulnerable");
 
-  return <Badge bg={variant}>Mode : {label}</Badge>;
+  useEffect(() => {
+    localStorage.setItem("mode", mode);
+  }, [mode]);
+
+  const toggleMode = () => {
+    const newMode = mode === "vulnerable" ? "securise" : "vulnerable";
+    setMode(newMode);
+  };
+
+  return (
+    <button
+      className={`btn btn-sm me-3 ${mode === "vulnerable" ? "btn-danger" : "btn-success"}`}
+      onClick={toggleMode}
+      title="Changer de mode d'application"
+    >
+      Mode : {mode.toUpperCase()}
+    </button>
+  );
 };
+
+export default ModeBadge;

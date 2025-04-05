@@ -7,11 +7,11 @@ const AdminProductsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api//products").then((res) => setProducts(res.data));
+      .get("http://localhost:5001/api/products").then((res) => setProducts(res.data));
   }, []);
 
   const handleDelete = (id) => {
-    axios.delete(`/products/${id}`).then(() => {
+    axios.delete(`/${id}`).then(() => {
       setProducts(products.filter((p) => p.id !== id));
     });
   };

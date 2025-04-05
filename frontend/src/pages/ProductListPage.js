@@ -38,7 +38,7 @@ const ProductListPage = () => {
             <Card className="shadow-sm h-100">
               <Card.Img
                 variant="top"
-                src={product.image || "https://via.placeholder.com/400x250?text=Produit"}
+                src={product.image}
                 style={{ height: "220px", objectFit: "cover" }}
               />
               <Card.Body>
@@ -47,7 +47,7 @@ const ProductListPage = () => {
                 <Card.Text>
                   <strong>{product.price} €</strong>
                 </Card.Text>
-                <Link to={`/produits/${product.id}`} className="btn btn-outline-primary">
+                <Link to={`/product/${product.id}`} className="btn btn-outline-primary">
                   ➕ Détails & Achat
                 </Link>
               </Card.Body>
