@@ -8,7 +8,7 @@ const AppNavbar = () => {
   const token = localStorage.getItem("token");
 
   const toggleMode = () => {
-    const newMode = mode === "vulnerable" ? "securise" : "vulnerable";
+    setMode(mode === "vulnerable" ? "secure" : "vulnerable");
     localStorage.setItem("mode", newMode);
     window.location.reload();
   };
