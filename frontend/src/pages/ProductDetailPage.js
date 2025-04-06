@@ -10,6 +10,8 @@ import {
   Alert,
   Form,
 } from "react-bootstrap";
+import DOMPurify from "dompurify";
+
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -101,20 +103,24 @@ const ProductDetailPage = () => {
 
       <h4 className="mt-4">💬 Commentaires</h4>
       {comments.length === 0 ? (
-        <p>Aucun commentaire pour ce produit.</p>
-      ) : (
-        <div className="mb-3">
-          {comments.map((c, i) => {
-            console.log("🧪 Contenu reçu :", c.content);
-            return (
-              <div key={i}>
-                <strong>{c.user}</strong> :{" "}
-                <span dangerouslySetInnerHTML={{ __html: c.content }} />
-              </div>
-            );
-          })}
+  <p>Aucun commentaire pour ce produit.</p>
+) : (
+  <div className="mb-3">
+    {comments.map((c, i) => {
+      console.log("🧪 Contenu reçu :", c.content);
+      const mode = localStorage.getItem("mode");
+      const contenu = mode === "securise" ? DOMPurify.sanitize(c.content) : c.content;
+
+      return (
+        <div key={i}>
+          <strong>{c.user}</strong> :{" "}
+          <span dangerouslySetInnerHTML={{ __html: contenu }} />
         </div>
-      )}
+      );
+    })}
+  </div>
+)}
+
 
       <Form className="mt-4">
         <Form.Group>

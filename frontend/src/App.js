@@ -15,6 +15,7 @@ import CommentsPage from "./pages/CommentsPage";
 import ProfilePage from "./pages/ProfilePage";
 import ScorePage from "./pages/ScorePage";
 import NotFound from "./pages/NotFound";
+import Redirect from "./pages/RedirectPage";
 import { ModeProvider } from "./context/ModeContext";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <AppNavbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/redirect" element={<Redirect />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route
